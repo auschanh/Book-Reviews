@@ -74,8 +74,10 @@ def login():
       
       rows = db.execute("SELECT * FROM users WHERE username= :username", {"username": username})
       user_row = rows.fetchone()
-
-      if user_row == None or check_password_hash(user_row[2], request.form["password"]):
+      
+      # use when we hash the passwords
+      # if user_row == None or not check_password_hash(user_row[1], request.form["password"]):
+      if user_row == None or not (user_row[1] == request.form["password"]):
           return render_template("error.html", msg="Invalid username or password")
         
       session[username] = True
