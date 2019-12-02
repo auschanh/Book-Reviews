@@ -1,16 +1,10 @@
 {% extends "layout.html" %}
-{% block hero %}
-<div class="hero-image">
-        <div class="hero-text">
-        <h1> GoodReads Book Reviews </h1>
-        <p> Have your voice heard. </p>
-        </div>
-        </div> 
+{% block title %}
+    login
 {% endblock %}
 {% block content %}
-<form action="/login" method="post">
 <div class="container">
-        <h3 style="text-align: center;"> Login or <a href="register"> Create an Account </a></h3>
+    <h3 style="text-align: center;"> Login or <a href="register"> Create an Account </a></h3>
     <form action="/login" method="POST">
         <label for="uname"><b>Username</b></label>
         <input class="index_uname"type="text" placeholder="Enter Username" name="username" required>
@@ -28,6 +22,4 @@
         <span class="psw">Forgot <a href="#">password?</a></span>
     </form>
 </div>
-</form>
-
 {% endblock %}
