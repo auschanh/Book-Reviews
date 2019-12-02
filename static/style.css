@@ -92,6 +92,27 @@ button:hover {
   padding: 16px;
 }
 
+.contact{
+  text-align: center;
+  margin: 0 auto;
+  padding-top: 30px;
+  font-family: tahoma;
+}
+
+.icon {
+  list-style: none;
+  margin: 10px 30px;
+  display: inline-block;
+  font-size: 30px;
+  padding: 2px;
+  transition: .5s;
+}
+
+.social-icons{
+  border: 1px solid #000000;
+  display: inline-flex;
+  border-radius: 5px;
+}
 /* The "Forgot password" text */
 span.psw {
   float: right;
