@@ -1,6 +1,7 @@
 import os
 
-from flask import Flask, session, request, render_template, url_for, redirect, flash, session, abort
+from logged import authorize
+from flask import Flask, session, request, render_template, url_for, redirect, flash, session, abort, jsonify
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -57,6 +58,7 @@ def register():
 @app.route("/login", methods=["GET", "POST"])
 def login():
   
+  session.clear()
   msg = ""
   # accessed when method is POST
   if request.method == "POST":
@@ -77,16 +79,21 @@ def login():
           return render_template("error.html", msg="Invalid username or password")
         
       session[username] = True
+      session["username"] = user_row[0]
       return redirect("./")
   else:
       return render_template("login.html")
 
+@app.route("/logout/<username>")
+@authorize
+def logout(username):
+    session.pop(username, None)
+    flash("You are now logged out.")
+    return redirect(url_for("login"))
+
 @app.route("/contact")
 def contact():
     return render_template("contact.html")
-
-
-
 
 if __name__ ==  "__main__":
     app.run(debug=True, port=5000)

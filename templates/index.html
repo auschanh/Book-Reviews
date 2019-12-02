@@ -2,12 +2,30 @@
 {% block hero %}
 <div class="hero-image">
         <div class="hero-text">
-        <h1> GoodReads Book Reviews </h1>
-        <p> Have your voice heard. </p>
+                {% if session.username %}
+                <h1> Welcome {{ session.username }} </h1>
+                <h1> GoodReads Book Reviews </h1>
+                <p> Have your voice heard. </p>
+                {% else %}
+                <h1> GoodReads Book Reviews </h1>
+                <p> Have your voice heard. </p>
+        {% endif %}        
         </div>
-        </div> 
+</div> 
 {% endblock %}
 {% block content %}
+{% if session.username %}
+<h2 style="text-align: center; font-family: Tahoma;"> Get Started with GoodReads Book Reviews: </h2>
+<ol class="logged-list">
+        <li>Search for a book you love</li>
+        <li>Rate and Review your book</li>
+        <li>Share your thoughts and let your voice be heard! </li>
+</ol>
+<br>
+<br>
+<br>
+<br>
+{% else %}
 <form action="/login" method="post">
 <div class="container">
         <h3 style="text-align: center;"> Login or <a href="register"> Create an Account </a></h3>
@@ -29,5 +47,5 @@
     </form>
 </div>
 </form>
-
+{% endif %}
 {% endblock %}
