@@ -33,7 +33,7 @@ def register():
         username = request.form["username"] 
         password = request.form["password"]
         if not (username and password):
-            flash("Please enter a username and password")
+            return render_template("error.html", msg="username and/or password required")
         else:
             # strip white spaces from user entered values
             username = username.strip()
@@ -41,19 +41,28 @@ def register():
         
         hashed_pass = generate_password_hash(password, 'sha256')
 
-        # Create a new user and add the session
-        new_user = User(username=username, pass_hash=hashed_pass)
-        db.session.add(new_user)
+        rows = db.execute("SELECT * FROM users WHERE username= :username", {"username": username})
+        row = rows.fetchone()
 
-        try:
-            db.session.commit()
-        except sqlalchemy.exc.IntegrityError:
-            flash(f"Username {username} already exists")
-            return redirect(url_for("register"))
+        if row:
+            return render_template("error.html", msg="that username already exists")
+       
+        if not request.form["password"] == request.form["confirm_password"]:
+            return render_template("error.html", msg="passwords didn't match")
+
+         # SQL command, INSERT user data from register.html   
+        db.execute("INSERT INTO users(username, hash_pass, fname, lname) VALUES (:username, :hash_pass, :fname, :lname)",
+        {"username": username,
+        "hash_pass": hashed_pass,
+        "fname": request.form["fname"],
+        "lname": request.form["lname"]
+        })
         
+        db.commit()
         flash("User account created!")
-        return redirect(url_for("login"))
-    return render_template("register.html")
+        return redirect(url_for("index"))
+    else:
+        return render_template("register.html")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -76,13 +85,13 @@ def login():
       user_row = rows.fetchone()
       
       # use when we hash the passwords
-      # if user_row == None or not check_password_hash(user_row[1], request.form["password"]):
-      if user_row == None or not (user_row[1] == request.form["password"]):
+      #if user_row == None or not (user_row[1] == request.form["password"]):
+      if user_row == None or not check_password_hash(user_row[1], request.form["password"]):
           return render_template("error.html", msg="Invalid username or password")
         
       session[username] = True
       session["username"] = user_row[0]
-      return redirect("./")
+      return redirect(url_for("index"))
   else:
       return render_template("login.html")
 
@@ -96,6 +105,11 @@ def logout(username):
 @app.route("/contact")
 def contact():
     return render_template("contact.html")
+
+@app.route("/api/<isbn>")
+@authorize
+def isbn_api(isbn):
+    pass
 
 if __name__ ==  "__main__":
     app.run(debug=True, port=5000)
