@@ -41,7 +41,7 @@ def register():
         
         hashed_pass = generate_password_hash(password, 'sha256')
 
-        rows = db.execute("SELECT * FROM users WHERE username= :username", {"username": username})
+        rows = db.execute("SELECT * FROM users WHERE username= :username", {"username": username.lower()})
         row = rows.fetchone()
 
         if row:
@@ -78,7 +78,7 @@ def login():
           flash("Please enter a username and/or password")
           return render_template("error.html", msg="No username or password entered")
       else:
-          username = username.strip()
+          username = username.strip().lower()
           password = password.strip()
       
       rows = db.execute("SELECT * FROM users WHERE username= :username", {"username": username})

@@ -2,6 +2,13 @@
 {% block hero %}
 <div class="hero-image">
         <div class="hero-text">
+                {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                                {% for message in messages %}
+                                        <h3> {{ message }} </h3>
+                                {% endfor %}
+                        {% endif %}
+                {% endwith %}
                 {% if session.username %}
                 <h1> Welcome {{ session.username }} </h1>
                 <h1> GoodReads Book Reviews </h1>
@@ -37,9 +44,7 @@
         <input class="index_upass" type="password" placeholder="Enter Password" name="password" required>
 
         <button class="btn btn-primary" type="submit">Login</button>
-        <label>
-                <input type="checkbox" checked="checked" name="remember"> Remember me
-        </label>
+       
         </div>
 
         <div class="container" style="background-color:#f1f1f1">
