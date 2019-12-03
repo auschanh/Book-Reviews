@@ -67,7 +67,6 @@ def register():
 @app.route("/login", methods=["GET", "POST"])
 def login():
   
-  session.clear()
   msg = ""
   # accessed when method is POST
   if request.method == "POST":
@@ -75,7 +74,6 @@ def login():
       password = request.form["password"]
       
       if not (username and password):
-          flash("Please enter a username and/or password")
           return render_template("error.html", msg="No username or password entered")
       else:
           username = username.strip().lower()
@@ -98,6 +96,7 @@ def login():
 @app.route("/logout/<username>")
 @authorize
 def logout(username):
+    session.clear()
     session.pop(username, None)
     flash("You are now logged out.")
     return redirect(url_for("login"))

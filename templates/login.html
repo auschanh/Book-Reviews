@@ -3,6 +3,13 @@
     login
 {% endblock %}
 {% block content %}
+{% with messages = get_flashed_messages() %}
+        {% if messages %}
+                {% for message in messages %}
+                <h3 style="font-family: tahoma; color: black; text-align:  center;"> {{ message }} </h3>
+                {% endfor %}
+        {% endif %}
+{% endwith %}
 <div class="container">
     <h3 style="text-align: center;"> Login or <a href="register"> Create an Account </a></h3>
     <form action="/login" method="POST">
