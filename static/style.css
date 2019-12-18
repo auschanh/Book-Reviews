@@ -144,14 +144,6 @@ button:hover {
 
 }
 
-@media only screen and (max-width : 450px) {
-
-  .hero-image {
-     background-size: 100%;
-  }
-
-}
-
 .logged-list{
   font-size: 20px;
 }

@@ -6,6 +6,7 @@ from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from werkzeug.security import generate_password_hash, check_password_hash
+from titlecase import titlecase
 
 app = Flask(__name__)
 
@@ -106,9 +107,28 @@ def contact():
     return render_template("contact.html")
 
 @app.route("/search", methods=["GET", "POST"])
+@authorize
 def search():
     if request.method == "POST":
-        pass
+        query = request.form["bookquery"]
+        # capitalize each letter in string except articles (but not at start of query)
+        query = titlecase(query)
+        print(query)
+        # add the wildcard for LIKE queries
+        book = "%" + query + "%"
+        if not book:
+            return render_template("error.html", msg="Please type a book title, ISBN, or author")
+        rows = db.execute("SELECT * FROM books WHERE isbn LIKE :book OR\
+            title LIKE :book OR \
+            author LIKE :book ",
+            {"book": book})
+        for row in rows:
+            print(row)
+        if rows.rowcount == 0:
+            flash(f"No results found for {query}")
+            return redirect(url_for("search"))
+        results = rows.fetchall() # fetch all results instead of fetchone as used in login route
+        return render_template("results.html", books=results)
     else:
         return render_template("search.html")
 

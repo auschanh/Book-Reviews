@@ -2,11 +2,21 @@
 {% block content %}
 <section class="hero-image">
     <div class="hero-text">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <h3> {{ message }} </h3>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
         <h1 id="search-h1"> Look up your favourite reads! </h1>
         <h2 id="search-h2"> Or share your thoughts with other readers</h2>
         <div id="search-page">
-            <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-light" type="submit">Search</button>
+            <form action="/search" method="post">
+                <input class="form-control" type="search" placeholder="ISBN, Author, or Title" name="bookquery">
+                <button class="btn btn-light" type="submit">Search</button>
+            </form>
         </div>
     </div>
 </section>
