@@ -105,10 +105,15 @@ def logout(username):
 def contact():
     return render_template("contact.html")
 
+@app.route("/search")
+def search():
+    return render_template("search.html")
+
 @app.route("/api/<isbn>")
 @authorize
 def isbn_api(isbn):
     pass
+    #res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "KEY", "isbns": "9781632168146"})
 
 if __name__ ==  "__main__":
     app.run(debug=True, port=5000)
