@@ -9,7 +9,7 @@ body{
 .hero-image {
 background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/static/coffeebook.jpeg");
 width: 100vw;
-height: 50vw;
+height: 100vh;
 background-position: center center;
 background-repeat: no-repeat;
 background-size: cover;
@@ -134,18 +134,6 @@ button:hover {
   border-radius: 5px;
   font-family: "acumin-pro";
 }
-/*
-#search-page{
-  width: 60%;
-  margin: 0 auto;
-  text-align: center;
-}*/
-/* The "Forgot password" text */
-span.psw {
-  float: right;
-  padding-top: 16px;
-  margin-bottom: 30px;
-}
 
 /* Change styles for span and cancel button on extra small screens */
 @media screen and (max-width: 300px) {
@@ -156,13 +144,12 @@ span.psw {
 
 }
 
-@media all and (max-width: 1025px){
- .hero-text{
-  font-size: 8vw; 
-  position: block;
-  text-align: center;
- } 
- 
+@media only screen and (max-width : 450px) {
+
+  .hero-image {
+     background-size: 100%;
+  }
+
 }
 
 .logged-list{

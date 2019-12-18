@@ -105,9 +105,12 @@ def logout(username):
 def contact():
     return render_template("contact.html")
 
-@app.route("/search")
+@app.route("/search", methods=["GET", "POST"])
 def search():
-    return render_template("search.html")
+    if request.method == "POST":
+        pass
+    else:
+        return render_template("search.html")
 
 @app.route("/api/<isbn>")
 @authorize
