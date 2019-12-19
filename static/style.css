@@ -21,6 +21,7 @@ align-items: center;
 color: white; 
 }
 
+
 #search-h1 {
   font-size: 5em;
   margin-bottom: 0.5em;
@@ -52,6 +53,15 @@ color: white;
 
 .navbar-nav.ml-auto:last-child {
     margin-right: 0;
+}
+
+.navbar-nav.ml-auto li a{
+  color: white !important;
+}
+
+nav a:hover {
+  border-bottom: 2px solid white;
+  padding: 6px 0; 
 }
 
 /* Full-width inputs */
