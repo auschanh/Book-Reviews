@@ -1,10 +1,11 @@
 {% extends "layout.html" %}
 {% block content %}
     <div class="row">
-    <div class="col-md-5">
-    <h1> Results for "{{ query }}" </h1>
+    <div class="col-md-6">
+    <h1 style="text-align: center;"> Results for "{{ query }}" </h1>
+    <h6 style="text-align: center;"> Click on ISBN, Title, Author or Year to sort them </h6>
     {% if books %}
-    <table id ="myTable" class="table">
+    <table id ="myTable">
         <thead>
         <tr>
             <th> ISBN </th>
@@ -27,7 +28,7 @@
 
     </table>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-6">
         <h1> Search for other books </h1>
         <div id="result-search">
             <form action="/search" method="post">
@@ -35,6 +36,8 @@
                 <button class="btn btn-primary" type="submit">Search</button>
             </form>
         </div>
+        <p> There are over 5000 books reviewed in GoodReads! </p>
+        <p> Find what others have to say or leave contribute yourself! </p>
     </div>
 </div>
 {% endblock %}

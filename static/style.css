@@ -157,15 +157,18 @@ button:hover {
 }
 
 table {
-  width: 90%;
+  width: 80%;
+  margin: 0 auto;
 }
 
 td {
-  padding: 1px;
-  border-bottom: 1px solid black;
+  padding: 5px;
 }
+
 th {
   cursor: pointer;
+}
+th, td {
   border-bottom: 1px solid black;
 }
 
@@ -173,4 +176,8 @@ th:hover {
   background-color: cornflowerblue;
   opacity: 0.8;
   padding: 6px 0; 
+}
+
+#result-search{
+  width: 70%;
 }
