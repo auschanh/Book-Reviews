@@ -11,7 +11,7 @@
                 {% endwith %}
                 {% if session.username %}
                 <div class ="welcome">
-                        <h1> Welcome {{ session.username }} </h1>
+                        <h1> Welcome {{ session.username.title() }} </h1>
                 </div>
                 <h2> Get Started with GoodReads Book Reviews: </h2>
                         <ol class="logged-list">

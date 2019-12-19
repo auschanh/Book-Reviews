@@ -1,9 +1,9 @@
 {% extends "layout.html" %}
 {% block content %}
+    <h1> Results for {{ query }} </h1>
     {% if books %}
     {% for book in books %}
-        <p style="color:black"> {{ book }} </p>
+        <p> {{ book }} </p>
     {% endfor %}
     {% endif %}
-    <p> hello </p>
 {% endblock %}

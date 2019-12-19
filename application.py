@@ -126,8 +126,7 @@ def search():
             flash(f"No results found for {query}")
             return redirect(url_for("search"))
         results = rows.fetchall() # fetch all results instead of fetchone as used in login route
-      
-        return render_template("results.html", books=results)
+        return render_template("results.html", books=results, query=query)
     else:
         return render_template("search.html")
 
