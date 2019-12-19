@@ -1,15 +1,16 @@
 // https://www.w3schools.com/howto/howto_js_sort_table.asp
+// modified algorithm from w3schools
 
+// get tags th tags
 th = document.getElementsByTagName('th');
 
 for (let c=0; c< th.length; c++){
-    th[c].addEventListener('click', item(c))
+    th[c].addEventListener('click', item(c)) // add eventlistener to each th tag
 }
 
 function item(c){
     return function (){
-        console.log(c);
-        sortTable(c);
+        sortTable(c); // call sort function everytime header item is clicked
     }
 }
 

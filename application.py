@@ -112,6 +112,9 @@ def search():
     if request.method == "POST":
         query = request.form["bookquery"]
         # capitalize each letter in string except articles (but not at start of query)
+        if query == "":
+            flash("Please type something!")
+            return redirect(url_for("search"))
         query = titlecase(query)
         print(query)
         # add the wildcard for LIKE queries
