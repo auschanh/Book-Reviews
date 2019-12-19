@@ -1,4 +1,9 @@
 {% extends "layout.html" %}
 {% block content %}
-    <p> We found stuff </p>
+    {% if books %}
+    {% for book in books %}
+        <p style="color:black"> {{ book }} </p>
+    {% endfor %}
+    {% endif %}
+    <p> hello </p>
 {% endblock %}

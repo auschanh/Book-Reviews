@@ -122,15 +122,15 @@ def search():
             title LIKE :book OR \
             author LIKE :book ",
             {"book": book})
-        for row in rows:
-            print(row)
         if rows.rowcount == 0:
             flash(f"No results found for {query}")
             return redirect(url_for("search"))
         results = rows.fetchall() # fetch all results instead of fetchone as used in login route
+      
         return render_template("results.html", books=results)
     else:
         return render_template("search.html")
+
 
 @app.route("/api/<isbn>")
 @authorize
