@@ -146,17 +146,28 @@ def books(isbn):
         pass
     else: 
         # user clicked on book from results page GET
-        check = db.execute("SELECT isbn FROM books WHERE isbn=:isbn", {"isbn": isbn})
-        check = check.fetchone()
+        check = db.execute("SELECT isbn, title, author, year FROM books WHERE isbn=:isbn", {"isbn": isbn})
+        check = check.fetchall()
+       
         if check is None:
             return render_template("error.html", msg=f"there is no book with ISBN {isbn}")
-        # Fetch reviews from GoodReads using their API
+
+        # Fetch reviews from GoodReads, use API
         key = "XeAVJlPSlL5liDg1ndgw"
         res = requests.get(f"https://www.goodreads.com/book/review_counts.json", params={"key": key, "isbns": isbn})
         response = res.json()
-        print(response)
-        return render_template("books.html")
-        # fetch our own reviews (submitted on my website, on my database)
+        response = response["books"][0] # grab only key in json obj
+        check.append(response)
+        books_list = check
+        
+        # fetch our own reviews (submitted on my website, on my database), query with SQLalchemy
+        own_review = db.execute("SELECT books.isbn, review, rating, username FROM books JOIN reviews\
+            ON books.isbn = reviews.isbn WHERE books.isbn=:isbn", {"isbn":isbn})
+        own_review = own_review.fetchall()
+        review = own_review
+
+        return render_template("books.html", response=books_list, review=review)
+        
 
 @app.route("/api/<isbn>")
 @authorize
