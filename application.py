@@ -1,4 +1,5 @@
 import os
+import requests
 
 from logged import authorize
 from flask import Flask, session, request, render_template, url_for, redirect, flash, session, abort, jsonify
@@ -51,7 +52,8 @@ def register():
         if not request.form["password"] == request.form["confirm_password"]:
             return render_template("error.html", msg="passwords didn't match")
 
-         # SQL command, INSERT user data from register.html   
+         # SQL command, INSERT user data from register.html
+        username = username.lower()   
         db.execute("INSERT INTO users(username, hash_pass, fname, lname) VALUES (:username, :hash_pass, :fname, :lname)",
         {"username": username,
         "hash_pass": hashed_pass,
@@ -68,8 +70,6 @@ def register():
 @app.route("/login", methods=["GET", "POST"])
 def login():
   
-  msg = ""
-  # accessed when method is POST
   if request.method == "POST":
       username = request.form["username"]
       password = request.form["password"]
@@ -111,12 +111,10 @@ def contact():
 def search():
     if request.method == "POST":
         query = request.form["bookquery"]
-        # capitalize each letter in string except articles (but not at start of query)
-        if query == "":
+        if query == "": 
             flash("Please type something!")
             return redirect(url_for("search"))
-        query = titlecase(query)
-        print(query)
+        query = titlecase(query)    # capitalize each letter in string except articles (but not at start of query)
         # add the wildcard for LIKE queries
         book = "%" + query + "%"
         if not book:
@@ -133,12 +131,37 @@ def search():
     else:
         return render_template("search.html")
 
-
+@app.route("/books/<isbn>", methods=["GET", "POST"])
+@authorize
+def books(isbn):
+    '''
+    key = "XeAVJlPSlL5liDg1ndgw"
+    res = requests.get(f"https://www.goodreads.com/book/review_counts.json", params={"key": key, "isbns": isbn})
+    items = res.json()
+    print(res.json())
+    return render_template("books.html", items=items)
+    '''
+    # user submitted a review
+    if request.method == "POST":
+        pass
+    else: # user clicked on book from results page
+        check = db.execute("SELECT isbn FROM books WHERE isbn=:isbn", {"isbn": isbn})
+        check = check.fetchone()
+        if check is None:
+            return render_template("error.html", msg=f"there is no book with ISBN {isbn}")
+        rows = db.execute("SELECT * FROM books WHERE isbn= :isbn", {"isbn": isbn})
+        rows = rows.fetchone()
+        return render_template("books.html", book=rows)
 @app.route("/api/<isbn>")
 @authorize
 def isbn_api(isbn):
+    
+    # review counts is not from the actual goodreads site
+    check = db.execute("SELECT isbn FROM books WHERE isbn= :isbn", {"isbn": isbn})
+    if check.fetchone() == None:
+        return jsonify({"error": "Invalid ISBN"}), 404
     pass
-    #res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "KEY", "isbns": "9781632168146"})
+    
 
 if __name__ ==  "__main__":
     app.run(debug=True, port=5000)

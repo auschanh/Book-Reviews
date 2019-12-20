@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block content %}
+   {% if book %}
+        <h2>{{ book["isbn"] }}</h2>
+        <h2>{{ book["title"] }}</h2>
+        <h2>{{ book["author"] }}</h2>
+        <h2>{{ book["year"] }}</h2>
+   {% endif %}
+{% endblock %}

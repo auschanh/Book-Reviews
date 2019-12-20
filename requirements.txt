@@ -6,3 +6,4 @@ titlecase
 werkzeug.security
 sqlalchemy
 sqlalchemy.orm
+requests
