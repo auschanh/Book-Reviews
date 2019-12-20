@@ -1,9 +1,16 @@
 {% extends "layout.html" %}
 {% block content %}
-   {% if book %}
-        <h2>{{ book["isbn"] }}</h2>
-        <h2>{{ book["title"] }}</h2>
-        <h2>{{ book["author"] }}</h2>
-        <h2>{{ book["year"] }}</h2>
+   {% if review %}
+        <h2>{{ review["isbn"] }}</h2>
+        <h2>{{ review["title"] }}</h2>
+        <h2>{{ review["author"] }}</h2>
+        <h2>{{ review["year"] }}</h2>
+        {% if review["review"] %}
+            <h1> REVIEWS </h1>
+            <h2>{{ review["username"] }} says: {{ review["review"] }}</h2>
+            <h2>{{ review["rating"] }}</h2>
+        {% else %}
+            <p> No reviews yet! Be the first </p>
+        {% endif %}
    {% endif %}
 {% endblock %}

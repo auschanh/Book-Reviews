@@ -144,14 +144,20 @@ def books(isbn):
     # user submitted a review
     if request.method == "POST":
         pass
-    else: # user clicked on book from results page
+    else: 
+        # user clicked on book from results page GET
         check = db.execute("SELECT isbn FROM books WHERE isbn=:isbn", {"isbn": isbn})
         check = check.fetchone()
         if check is None:
             return render_template("error.html", msg=f"there is no book with ISBN {isbn}")
-        rows = db.execute("SELECT * FROM books WHERE isbn= :isbn", {"isbn": isbn})
-        rows = rows.fetchone()
-        return render_template("books.html", book=rows)
+        # Fetch reviews from GoodReads using their API
+        key = "XeAVJlPSlL5liDg1ndgw"
+        res = requests.get(f"https://www.goodreads.com/book/review_counts.json", params={"key": key, "isbns": isbn})
+        response = res.json()
+        print(response)
+        return render_template("books.html")
+        # fetch our own reviews (submitted on my website, on my database)
+
 @app.route("/api/<isbn>")
 @authorize
 def isbn_api(isbn):
