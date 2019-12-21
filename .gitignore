@@ -1,5 +1,3 @@
-# ignore __pycache__ and flask_session
-# there are temporary and created at runtime
-
 __pycache__
+
 flask_session
