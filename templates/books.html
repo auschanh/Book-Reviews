@@ -26,7 +26,15 @@
     </div>
 
     <div class="col-md-6">
+        {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                        {% for message in messages %}
+                                <h3> {{ message }} </h3>
+                        {% endfor %}
+                {% endif %}
+        {% endwith %}
         <h1> Leave your thoughts! </h1>
+        <form method="POST">
         <div class="book-rating">
             <h6 style="display: inline-block;"> Leave a Rating: </h6>
             <input type="radio" id="one" name="rating" value="1">
@@ -40,7 +48,6 @@
             <input type="radio" id="five" name="rating" value="5">
             <label for="five">5</label>
         </div>
-        <form action="/book.html">
             <textarea name="message" rows="5" cols="80" placeholder="Leave a review!"> </textarea>
             <br>
             <input type="submit">

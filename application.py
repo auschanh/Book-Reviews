@@ -89,7 +89,7 @@ def login():
           return render_template("error.html", msg="Invalid username or password")
         
       session[username] = True
-      session["username"] = user_row[0]
+      session["username"] = user_row[0] # set session username to username from query
       return redirect(url_for("index"))
   else:
       return render_template("login.html")
@@ -143,7 +143,21 @@ def books(isbn):
     '''
     # user submitted a review
     if request.method == "POST":
-        pass
+        # grab necessary variables/info
+
+        user = session["username"]
+        rating = request.form["rating"]
+        message = request.form["message"]
+
+        check = db.execute("SELECT username, isbn FROM reviews \
+            WHERE username=:username\
+            AND isbn=:isbn",
+            {"username": user, "isbn": isbn})
+        check = check.fetchone()
+        # prevent a user from submitting a review for something they already reviewed
+        if check is not None:
+            flash("You cannot leave another review for the same book")
+            return redirect(request.url) # returns to same page
     else: 
         # user clicked on book from results page GET
         check = db.execute("SELECT isbn, title, author, year FROM books WHERE isbn=:isbn", {"isbn": isbn})
