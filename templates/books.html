@@ -1,18 +1,50 @@
 {% extends "layout.html" %}
 {% block content %}
+<div class="row">
+    <div class="col-sm-6">
+        <div class="book-info">
    {% if response %}
-        <h2>{{ response[1]["isbn"] }}</h2>
-        <h2>{{ response[0]["title"] }}</h2>
-        <h2>{{ response[0]["author"] }}</h2>
-        <h2>{{ response[0]["year"] }}</h2>
-        <h2> Average Ratings: {{ response[1]["average_rating"] }}</h2>
-        <h2> Number of Ratingss: {{ response[1]["ratings_count"] }}</h2>
+        <img src="http://covers.openlibrary.org/b/isbn/{{ response[1]['isbn'] }}-M.jpg">
+        <h2> {{ response[0]["title"] }}</h2>
+        <h4>ISBN: {{ response[1]["isbn"] }}</h4>
+        <h4>Author: {{ response[0]["author"] }}</h4>
+        <h4>Published: {{ response[0]["year"] }}</h4>
+        <h4> Average Ratings: {{ response[1]["average_rating"] }}</h4>
+        <h4> Number of Ratingss: {{ response[1]["ratings_count"] }}</h4>
+        <br>
+        </div>
         {% if review %}
-            <h1> REVIEWS </h1>
-            <h2>{{ review[0]["username"] }} says: {{ review[0]["review"] }}</h2>
-            <h2>{{ review[0]["rating"] }}</h2>
+        <h1 style="padding-top: 20px; text-align: center;"> REVIEWS </h1>
+        <div class="reviews">
+            <h5><span class="username">{{ review[0]["username"] }}</span> rated it {{ review[0]["rating"] }}/5 </h6>
+            <p> {{ review[0]["review"] }}</p>
+        </div>
         {% else %}
             <p> No reviews yet! Be the first </p>
         {% endif %}
    {% endif %}
+    </div>
+
+    <div class="col-md-6">
+        <h1> Leave your thoughts! </h1>
+        <div class="book-rating">
+            <h6 style="display: inline-block;"> Leave a Rating: </h6>
+            <input type="radio" id="one" name="rating" value="1">
+            <label for="one">1</label>
+            <input type="radio" id="two" name="rating" value="2">
+            <label for="two">2</label>
+            <input type="radio" id="three" name="rating" value="3">
+            <label for="three">3</label>
+            <input type="radio" id="four" name="rating" value="4">
+            <label for="four">4</label>
+            <input type="radio" id="five" name="rating" value="5">
+            <label for="five">5</label>
+        </div>
+        <form action="/book.html">
+            <textarea name="message" rows="5" cols="80" placeholder="Leave a review!"> </textarea>
+            <br>
+            <input type="submit">
+          </form>          
+    </div>
+</div>
 {% endblock %}
