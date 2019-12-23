@@ -144,10 +144,14 @@ def books(isbn):
     # user submitted a review
     if request.method == "POST":
         # grab necessary variables/info
-
         user = session["username"]
         rating = request.form["rating"]
-        message = request.form["message"]
+        message = request.form.get("message", None)
+
+        print("This is message:", message)
+        if not message:
+            flash("Please write a review!")
+            return redirect(request.url)
 
         check = db.execute("SELECT username, isbn FROM reviews \
             WHERE username=:username\
@@ -156,8 +160,9 @@ def books(isbn):
         check = check.fetchone()
         # prevent a user from submitting a review for something they already reviewed
         if check is not None:
-            flash("You cannot leave another review for the same book")
+            flash("You've already reviewed this book!")
             return redirect(request.url) # returns to same page
+        return "OK"
     else: 
         # user clicked on book from results page GET
         check = db.execute("SELECT isbn, title, author, year FROM books WHERE isbn=:isbn", {"isbn": isbn})

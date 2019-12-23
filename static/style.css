@@ -5,53 +5,126 @@ body{
 
 }
 
+/* NAVBAR */
+.navbar-nav.ml-auto:last-child {
+  margin-right: 0;
+}
+
+.navbar-nav.ml-auto li a{
+color: white !important;
+}
+
+nav a:hover {
+border-bottom: 2px solid white;
+padding: 6px 0; 
+}
+
+/* LANDING PAGE */
+.hero-image {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/static/coffeebook.jpeg");
+  width: 100vw;
+  height: 100vh;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white; 
+  }
+  
+/* successful log in page */
 .welcome a { color: inherit; } 
+
+.welcome{
+  margin-bottom: 12em;
+}
+
+.welcome h1{
+  font-size: 5em;
+}
+
+.logged-list{
+  font-size: 20px;
+}
+
+/* results page after search */
 
 td a {
   color: inherit;
 }
 
 #myTable {
-  background-color: #00a0a0;
+  background-color: rgb(159, 186, 238);
   border-radius: 5px;
   text-align: center;
 }
+
+table {
+  width: 80%;
+  margin: 0 auto;
+}
+
+td {
+  padding: 5px;
+  font-size: 120%;
+}
+
+th{
+  border-bottom: 2px solid black;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 125%;
+  background-color: cornflowerblue;
+}
+
+th:hover {
+  border-bottom: 2px solid white;
+  opacity: 0.8;
+  padding: 6px 0; 
+}
+
+/* book page with reviews */
+
 .book-rating label {
   padding-right: 12px;
 }
 
 .book-info {
   text-align: center;
-  border-bottom: 10px black solid;
+  margin-top: 50px;
 }
 
 .reviews {
-  text-align: center;
   margin-top: 30px;
-  border-top: 2px black solid;
-  border-bottom: 2px black solid;
+  margin-left: 150px;
+  margin-right: 150px;
+}
+
+hr {
+  border: 1px solid #b9b9b9;
+  margin-bottom: 25px;
 }
 
 .username{
-  color: cornflowerblue;
-  font-size: 150%;
+  color: royalblue;
+  text-align: left;
 }
 
-.hero-image {
-background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/static/coffeebook.jpeg");
-width: 100vw;
-height: 100vh;
-background-position: center center;
-background-repeat: no-repeat;
-background-size: cover;
-background-attachment: fixed;
-text-align: center;
-display: flex;
-justify-content: center;
-align-items: center;
-color: white; 
+.comment {
+  text-align: center;
 }
 
+.comment-area{
+  background-color: cornflowerblue;
+  border-radius: 20px;
+  padding: 50px;
+  margin-right: 150px;
+}
+
+/* SEARCH PAGE */
 
 #search-h1 {
   font-size: 5em;
@@ -63,13 +136,10 @@ color: white;
   font-size: 2em;
 }
 
-.welcome{
-  margin-bottom: 12em;
+#result-search{
+  width: 70%;
 }
 
-.welcome h1{
-  font-size: 5em;
-}
 
 .btn-light{
   color: white;
@@ -80,19 +150,6 @@ color: white;
   font-size: 2em;
   border-radius: 20px;
 
-}
-
-.navbar-nav.ml-auto:last-child {
-    margin-right: 0;
-}
-
-.navbar-nav.ml-auto li a{
-  color: white !important;
-}
-
-nav a:hover {
-  border-bottom: 2px solid white;
-  padding: 6px 0; 
 }
 
 /* Full-width inputs */
@@ -151,6 +208,7 @@ button:hover {
   padding: 16px;
 }
 
+/* CONTACT PAGE */
 .contact{
   text-align: center;
   margin: 0 auto;
@@ -174,6 +232,7 @@ button:hover {
   font-family: "acumin-pro";
 }
 
+
 /* Change styles for span and cancel button on extra small screens */
 @media screen and (max-width: 300px) {
   span.psw {
@@ -181,35 +240,4 @@ button:hover {
     float: none;
   }
 
-}
-
-.logged-list{
-  font-size: 20px;
-}
-
-table {
-  width: 80%;
-  margin: 0 auto;
-}
-
-td {
-  padding: 5px;
-  font-size: 120%;
-}
-
-th{
-  border-bottom: 2px solid black;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 125%;
-}
-
-th:hover {
-  background-color: cornflowerblue;
-  opacity: 0.8;
-  padding: 6px 0; 
-}
-
-#result-search{
-  width: 70%;
 }
