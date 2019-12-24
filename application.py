@@ -166,12 +166,12 @@ def books(isbn):
 
         get_title = db.execute("SELECT title FROM books WHERE isbn=:isbn", {"isbn": isbn})
         get_title = get_title.fetchone()
-        print(get_title)
+       
         title = get_title["title"]
         query = db.execute("INSERT INTO reviews(username, title, review, rating, isbn) VALUES\
             (:username, :title, :review, :rating, :isbn)",
             {"username": user, "title": title, "review": message, "rating": rating, "isbn": isbn})
-        print(query)
+        
         db.commit()
         flash(f"Review submitted for {title}")
         return redirect(request.url)
@@ -197,7 +197,6 @@ def books(isbn):
             ON books.isbn = reviews.isbn WHERE books.isbn=:isbn", {"isbn":isbn})
         own_review = own_review.fetchall()
         review = own_review
-        print("These are the reviews: ", review)
 
         return render_template("books.html", response=books_list, review=review)
         
@@ -206,12 +205,32 @@ def books(isbn):
 @authorize
 def isbn_api(isbn):
     
-    # review counts is not from the actual goodreads site
     check = db.execute("SELECT isbn FROM books WHERE isbn= :isbn", {"isbn": isbn})
     if check.fetchone() == None:
         return jsonify({"error": "Invalid ISBN"}), 404
-    pass
     
+    # call goodreads API for review data
+    key = "XeAVJlPSlL5liDg1ndgw"
+    res = requests.get(f"https://www.goodreads.com/book/review_counts.json", params={"key": key, "isbns": isbn})
+    response = res.json()
+    response = response["books"][0]
+    print(response)
+
+    # fetch review count and average score
+    review_count = response["reviews_count"]
+    average_rating = response["average_rating"]
+
+    # fetch title, author, isbn, year from our DB
+    query = db.execute("SELECT * FROM books WHERE isbn=:isbn", {"isbn": isbn})
+    book_info = query.fetchone()
+    return jsonify({
+        "title": book_info["title"],
+        "author": book_info["author"],
+        "year": book_info["year"],
+        "isbn": book_info["isbn"],
+        "review_count": review_count,
+        "average_score": average_rating
+    })
 
 if __name__ ==  "__main__":
     app.run(debug=True, port=5000)
