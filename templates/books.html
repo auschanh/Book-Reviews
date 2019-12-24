@@ -5,7 +5,7 @@
         <div class="book-info">
    {% if response %}
         <img src="http://covers.openlibrary.org/b/isbn/{{ response[1]['isbn'] }}-M.jpg">
-        <h2> {{ response[0]["title"] }}</h2>
+        <h2 style="color: royalblue"> {{ response[0]["title"] }}</h2>
         <h4>ISBN: {{ response[1]["isbn"] }}</h4>
         <h4>Author: {{ response[0]["author"] }}</h4>
         <h4>Published: {{ response[0]["year"] }}</h4>
@@ -14,10 +14,13 @@
         <br>
         </div>
         {% if review %}
-        <h1 style="padding-top: 20px; text-align: center;"> REVIEWS </h1>
+        <h1 style="padding-top: 20px; text-align: center;"> Reviews </h1>
         <div class="reviews">
-            <h5><span class="username">{{ review[0]["username"] }}</span> rated it {{ review[0]["rating"] }}/5 </h6>
-            <p> {{ review[0]["review"] }}</p>
+            {% for reviews in review %}
+            <hr>
+            <h5><span class="username">{{ reviews["username"] }}</span> rated it {{ reviews["rating"] }}/5 </h6>
+            <p class="comment"> {{ reviews["review"] }}</p>
+            {% endfor %}
         </div>
         {% else %}
             <p> No reviews yet! Be the first </p>
@@ -26,7 +29,17 @@
     </div>
 
     <div class="col-md-6">
-        <h1> Leave your thoughts! </h1>
+        {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                        {% for message in messages %}
+                                <h3> {{ message }} </h3>
+                        {% endfor %}
+                {% endif %}
+        {% endwith %}
+        
+        <h1 style="margin-top: 50px"> Leave your thoughts! </h1>
+        <div class="comment-area">
+        <form method="POST", action="/books/{{ response[1]['isbn'] }}">
         <div class="book-rating">
             <h6 style="display: inline-block;"> Leave a Rating: </h6>
             <input type="radio" id="one" name="rating" value="1">
@@ -37,14 +50,14 @@
             <label for="three">3</label>
             <input type="radio" id="four" name="rating" value="4">
             <label for="four">4</label>
-            <input type="radio" id="five" name="rating" value="5">
+            <input type="radio" id="five" name="rating" value="5" checked>
             <label for="five">5</label>
         </div>
-        <form action="/book.html">
-            <textarea name="message" rows="5" cols="80" placeholder="Leave a review!"> </textarea>
+            <textarea name="message" rows="5" cols="80" placeholder="Leave a review!"></textarea>
             <br>
-            <input type="submit">
+            <input type="submit" style="background-color:palegoldenrod">
           </form>          
-    </div>
+    </section>
+</div>
 </div>
 {% endblock %}

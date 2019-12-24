@@ -89,7 +89,7 @@ def login():
           return render_template("error.html", msg="Invalid username or password")
         
       session[username] = True
-      session["username"] = user_row[0]
+      session["username"] = user_row[0] # set session username to username from query
       return redirect(url_for("index"))
   else:
       return render_template("login.html")
@@ -143,7 +143,39 @@ def books(isbn):
     '''
     # user submitted a review
     if request.method == "POST":
-        pass
+        # grab necessary variables/info
+        user = session["username"]
+        rating = request.form["rating"]
+        message = request.form.get("message", None)
+
+        if not message:
+            flash("Please write a review!")
+            return redirect(request.url)
+
+        check = db.execute("SELECT username, isbn FROM reviews \
+            WHERE username=:username\
+            AND isbn=:isbn",
+            {"username": user, "isbn": isbn})
+        check = check.fetchone()
+        # prevent a user from submitting a review for something they already reviewed
+        if check is not None:
+            flash("You've already reviewed this book!")
+            return redirect(request.url) # returns to same page
+        
+        # grab title 
+
+        get_title = db.execute("SELECT title FROM books WHERE isbn=:isbn", {"isbn": isbn})
+        get_title = get_title.fetchone()
+        print(get_title)
+        title = get_title["title"]
+        query = db.execute("INSERT INTO reviews(username, title, review, rating, isbn) VALUES\
+            (:username, :title, :review, :rating, :isbn)",
+            {"username": user, "title": title, "review": message, "rating": rating, "isbn": isbn})
+        print(query)
+        db.commit()
+        flash(f"Review submitted for {title}")
+        return redirect(request.url)
+        
     else: 
         # user clicked on book from results page GET
         check = db.execute("SELECT isbn, title, author, year FROM books WHERE isbn=:isbn", {"isbn": isbn})
@@ -165,6 +197,7 @@ def books(isbn):
             ON books.isbn = reviews.isbn WHERE books.isbn=:isbn", {"isbn":isbn})
         own_review = own_review.fetchall()
         review = own_review
+        print("These are the reviews: ", review)
 
         return render_template("books.html", response=books_list, review=review)
         
