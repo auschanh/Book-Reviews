@@ -16,9 +16,11 @@
         {% if review %}
         <h1 style="padding-top: 20px; text-align: center;"> Reviews </h1>
         <div class="reviews">
+            {% for reviews in review %}
             <hr>
-            <h5><span class="username">{{ review[0]["username"] }}</span> rated it {{ review[0]["rating"] }}/5 </h6>
-            <p class="comment"> {{ review[0]["review"] }}</p>
+            <h5><span class="username">{{ reviews["username"] }}</span> rated it {{ reviews["rating"] }}/5 </h6>
+            <p class="comment"> {{ reviews["review"] }}</p>
+            {% endfor %}
         </div>
         {% else %}
             <p> No reviews yet! Be the first </p>

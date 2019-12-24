@@ -148,7 +148,6 @@ def books(isbn):
         rating = request.form["rating"]
         message = request.form.get("message", None)
 
-        print("This is message:", message)
         if not message:
             flash("Please write a review!")
             return redirect(request.url)
@@ -162,7 +161,21 @@ def books(isbn):
         if check is not None:
             flash("You've already reviewed this book!")
             return redirect(request.url) # returns to same page
-        return "OK"
+        
+        # grab title 
+
+        get_title = db.execute("SELECT title FROM books WHERE isbn=:isbn", {"isbn": isbn})
+        get_title = get_title.fetchone()
+        print(get_title)
+        title = get_title["title"]
+        query = db.execute("INSERT INTO reviews(username, title, review, rating, isbn) VALUES\
+            (:username, :title, :review, :rating, :isbn)",
+            {"username": user, "title": title, "review": message, "rating": rating, "isbn": isbn})
+        print(query)
+        db.commit()
+        flash(f"Review submitted for {title}")
+        return redirect(request.url)
+        
     else: 
         # user clicked on book from results page GET
         check = db.execute("SELECT isbn, title, author, year FROM books WHERE isbn=:isbn", {"isbn": isbn})
@@ -184,6 +197,7 @@ def books(isbn):
             ON books.isbn = reviews.isbn WHERE books.isbn=:isbn", {"isbn":isbn})
         own_review = own_review.fetchall()
         review = own_review
+        print("These are the reviews: ", review)
 
         return render_template("books.html", response=books_list, review=review)
         
