@@ -19,6 +19,10 @@ border-bottom: 2px solid white;
 padding: 6px 0; 
 }
 
+.search-register {
+  margin-left: 0px;
+}
+
 /* LANDING PAGE */
 .hero-image {
   background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/static/coffeebook.jpeg");
@@ -86,6 +90,9 @@ th:hover {
   padding: 6px 0; 
 }
 
+.results-pg{
+  margin-top: 50px;
+}
 /* book page with reviews */
 
 .book-rating label {
@@ -172,6 +179,8 @@ hr {
   border: none;
   cursor: pointer;
   width: 100%;
+  font-size: 20px;
+  font-weight: bold;
 }
 
 .form-control-register {
@@ -192,6 +201,7 @@ hr {
 .signup-form {
   font-size: 20px;
   width: 50%;
+  margin-top: 50px;
   margin-left: auto;
   margin-right: auto;
   padding: 40px;
