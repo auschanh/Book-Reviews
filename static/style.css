@@ -58,7 +58,7 @@ td a {
 
 #myTable {
   background-color: rgb(159, 186, 238);
-  border-radius: 5px;
+  border-radius: 20px;
   text-align: center;
 }
 
@@ -68,7 +68,7 @@ table {
 }
 
 td {
-  padding: 5px;
+  padding: 15px;
   font-size: 120%;
 }
 
@@ -118,9 +118,9 @@ hr {
 }
 
 .comment-area{
-  background-color: cornflowerblue;
+  background-color: rgb(159, 186, 238);
   border-radius: 20px;
-  padding: 50px;
+  padding: 40px;
   margin-right: 150px;
 }
 
@@ -138,6 +138,9 @@ hr {
 
 #result-search{
   width: 70%;
+  padding: 30px;
+  background-color: rgb(159, 186, 238);
+  border-radius: 20px;
 }
 
 
@@ -163,7 +166,7 @@ hr {
 }
 
 /* Set a style for all buttons */
-.btn-primary {
+.btn-warning {
   padding: 14px 20px;
   margin: 8px 0;
   border: none;
@@ -185,10 +188,15 @@ hr {
   font-weight: bold;
 }
 
+/* REGISTER PAGE */
 .signup-form {
+  font-size: 20px;
   width: 50%;
   margin-left: auto;
   margin-right: auto;
+  padding: 40px;
+  background-color: rgb(159, 186, 238);
+  border-radius: 20px;
 }
 
 /* Add a hover effect for buttons */
@@ -205,14 +213,32 @@ button:hover {
 
 /* Add padding to containers */
 .container {
-  padding: 16px;
+  background-color: rgb(159, 186, 238);
+  margin-top: 30px;
+  padding: 40px;
+  border-radius: 20px;
 }
 
 /* CONTACT PAGE */
 .contact{
   text-align: center;
-  margin: 0 auto;
-  padding-top: 30px;
+  background-color: rgb(159, 186, 238);
+  margin-top: 50px;
+  margin-left: 400px;
+  margin-right: 400px;
+  border-radius: 20px;
+  padding: 30px;
+  font-family: "acumin-pro";
+}
+
+.social-contact{
+  text-align: center;
+  background-color: rgb(159, 186, 238);
+  margin-top: 50px;
+  margin-left: 500px;
+  margin-right: 500px;
+  border-radius: 20px;
+  padding: 30px;
   font-family: "acumin-pro";
 }
 

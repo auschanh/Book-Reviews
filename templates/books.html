@@ -10,7 +10,7 @@
         <h4>Author: {{ response[0]["author"] }}</h4>
         <h4>Published: {{ response[0]["year"] }}</h4>
         <h4> Average Ratings: {{ response[1]["average_rating"] }}</h4>
-        <h4> Number of Ratingss: {{ response[1]["ratings_count"] }}</h4>
+        <h4> Number of Ratings: {{ response[1]["ratings_count"] }}</h4>
         <br>
         </div>
         {% if review %}
@@ -18,8 +18,8 @@
         <div class="reviews">
             {% for reviews in review %}
             <hr>
-            <h5><span class="username">{{ reviews["username"] }}</span> rated it {{ reviews["rating"] }}/5 </h6>
-            <p class="comment"> {{ reviews["review"] }}</p>
+            <h4><span class="username">{{ reviews["username"] }}</span> rated it {{ reviews["rating"] }}/5 </h4>
+            <h5 class="comment"> {{ reviews["review"] }}</h5>
             {% endfor %}
         </div>
         {% else %}
@@ -41,7 +41,7 @@
         <div class="comment-area">
         <form method="POST", action="/books/{{ response[1]['isbn'] }}">
         <div class="book-rating">
-            <h6 style="display: inline-block;"> Leave a Rating: </h6>
+            <h5 style="display: inline-block;"> Leave a Rating: </h5>
             <input type="radio" id="one" name="rating" value="1">
             <label for="one">1</label>
             <input type="radio" id="two" name="rating" value="2">
@@ -55,7 +55,7 @@
         </div>
             <textarea name="message" rows="5" cols="80" placeholder="Leave a review!"></textarea>
             <br>
-            <input type="submit" style="background-color:palegoldenrod">
+            <button type="submit" class="btn btn-warning">Submit</button>
           </form>          
     </section>
 </div>

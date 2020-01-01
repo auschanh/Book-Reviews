@@ -10,8 +10,8 @@
                 {% endfor %}
         {% endif %}
 {% endwith %}
-<div class="container">
-    <h3 style="text-align: center;"> Login or <a href="register"> Create an Account </a></h3>
+    <h3 style="text-align: center; margin-top: 30px;"> Login or <a href="register"> Create an Account </a></h3>
+    <div class="container">
     <form action="/login" method="POST">
         <label for="uname"><b>Username</b></label>
         <input class="index_uname"type="text" placeholder="Enter Username" name="username" required>
@@ -19,7 +19,7 @@
         <label for="psw"><b>Password</b></label>
         <input class="index_upass" type="password" placeholder="Enter Password" name="password" required>
 
-        <button class="btn btn-primary" type="submit">Login</button>
+        <button class="btn btn-warning" type="submit">Login</button>
         
         </div>
 
