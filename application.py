@@ -83,8 +83,6 @@ def login():
       rows = db.execute("SELECT * FROM users WHERE username= :username", {"username": username})
       user_row = rows.fetchone()
       
-      # use when we hash the passwords
-      #if user_row == None or not (user_row[1] == request.form["password"]):
       if user_row == None or not check_password_hash(user_row[1], request.form["password"]):
           return render_template("error.html", msg="Invalid username or password")
         
@@ -115,8 +113,10 @@ def search():
             flash("Please type something!")
             return redirect(url_for("search"))
         query = titlecase(query)    # capitalize each letter in string except articles (but not at start of query)
+        search_result = query.strip()
         # add the wildcard for LIKE queries
-        book = "%" + query + "%"
+        query_replaced = query.replace(" ", "%")
+        book = "%" + query_replaced + "%"
         if not book:
             return render_template("error.html", msg="Please type a book title, ISBN, or author")
         rows = db.execute("SELECT * FROM books WHERE isbn LIKE :book OR\
@@ -127,20 +127,13 @@ def search():
             flash(f"No results found for {query}")
             return redirect(url_for("search"))
         results = rows.fetchall() # fetch all results instead of fetchone as used in login route
-        return render_template("results.html", books=results, query=query)
+        return render_template("results.html", books=results, query=search_result)
     else:
         return render_template("search.html")
 
 @app.route("/books/<isbn>", methods=["GET", "POST"])
 @authorize
 def books(isbn):
-    '''
-    key = "XeAVJlPSlL5liDg1ndgw"
-    res = requests.get(f"https://www.goodreads.com/book/review_counts.json", params={"key": key, "isbns": isbn})
-    items = res.json()
-    print(res.json())
-    return render_template("books.html", items=items)
-    '''
     # user submitted a review
     if request.method == "POST":
         # grab necessary variables/info
@@ -214,7 +207,6 @@ def isbn_api(isbn):
     res = requests.get(f"https://www.goodreads.com/book/review_counts.json", params={"key": key, "isbns": isbn})
     response = res.json()
     response = response["books"][0]
-    print(response)
 
     # fetch review count and average score
     review_count = response["reviews_count"]
