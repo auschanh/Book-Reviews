@@ -168,7 +168,6 @@ hr {
   padding: 12px 20px;
   margin: 8px 0;
   display: inline-block;
-  border: 1px solid #ccc;
   box-sizing: border-box;
 }
 
@@ -227,6 +226,7 @@ button:hover {
   margin-top: 30px;
   padding: 40px;
   border-radius: 20px;
+  color: black;
 }
 
 /* CONTACT PAGE */
