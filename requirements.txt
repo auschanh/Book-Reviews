@@ -3,7 +3,7 @@ Flask-Session
 psycopg2-binary
 SQLAlchemy
 titlecase
-werkzeug.security
+werkzeug.security==0.14.1
 sqlalchemy
 sqlalchemy.orm
 requests
