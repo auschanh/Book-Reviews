@@ -6,3 +6,4 @@ titlecase
 Werkzeug==0.15.3
 sqlalchemy
 requests
+gunicorn==20.0.4
