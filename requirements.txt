@@ -5,5 +5,4 @@ SQLAlchemy
 titlecase
 Werkzeug==0.15.3
 sqlalchemy
-sqlalchemy.orm
 requests
