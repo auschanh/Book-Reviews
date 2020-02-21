@@ -131,6 +131,13 @@ hr {
   margin-right: 150px;
 }
 
+/*
+input[name=message]{
+  padding-right: 200px;
+}
+*/
+
+
 /* SEARCH PAGE */
 
 #search-h1 {
