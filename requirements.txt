@@ -3,7 +3,7 @@ Flask-Session
 psycopg2-binary
 SQLAlchemy
 titlecase
-Werkzeug==0.15.3
-sqlalchemy
+Werkzeug==2.0.3
+sqlalchemy==1.2.0
 requests
 gunicorn==20.0.4
