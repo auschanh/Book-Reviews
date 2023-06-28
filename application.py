@@ -173,18 +173,37 @@ def books(isbn):
         # user clicked on book from results page GET
         check = db.execute("SELECT isbn, title, author, year FROM books WHERE isbn=:isbn", {"isbn": isbn})
         check = check.fetchall()
+        print(check)
        
         if check is None:
             return render_template("error.html", msg=f"there is no book with ISBN {isbn}")
 
-        # Fetch reviews from GoodReads, use API
-        key = "XeAVJlPSlL5liDg1ndgw"
-        res = requests.get(f"https://www.goodreads.com/book/review_counts.json", params={"key": key, "isbns": isbn})
+        # # Fetch reviews from GoodReads, use API
+        # key = "XeAVJlPSlL5liDg1ndgw"
+        # res = requests.get(f"https://www.goodreads.com/book/review_counts.json", params={"key": key, "isbns": isbn})
+        # response = res.json()
+        # response = response["books"][0] # grab only key in json obj
+        # check.append(response)
+        # books_list = check
+
+        url = f"https://openlibrary.org/api/books?bibkeys=ISBN:{isbn}&jscmd=details&format=json"
+
+        payload={}
+        headers = {}
+
+        res = requests.request("GET", url, headers=headers, data=payload)
         response = res.json()
-        response = response["books"][0] # grab only key in json obj
+        response = response[f"ISBN:{isbn}"]["details"]
         check.append(response)
+
+        url = f"https://openlibrary.org/search.json?isbn={isbn}&fields=rating*"
+        ratings = requests.request("GET", url, headers=headers, data=payload)
+        ratings = ratings.json()
+        ratings = ratings["docs"]
+        check.append(ratings)
+        print(check)
         books_list = check
-        
+
         # fetch our own reviews (submitted on my website, on my database), query with SQLalchemy
         own_review = db.execute("SELECT books.isbn, review, rating, username FROM books JOIN reviews\
             ON books.isbn = reviews.isbn WHERE books.isbn=:isbn", {"isbn":isbn})
