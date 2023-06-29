@@ -7,13 +7,15 @@
     <div class="col-sm-6">
         <div class="book-info">
    {% if response %}
-        <img src="http://covers.openlibrary.org/b/isbn/{{ response[1]['isbn'] }}-M.jpg">
+        <img src="http://covers.openlibrary.org/b/isbn/{{ response[0][0] }}-L.jpg">
         <h2 style="color: royalblue"> {{ response[0]["title"] }}</h2>
-        <h4>ISBN: {{ response[1]["isbn"] }}</h4>
+        <h4>ISBN: {{ response[0][0] }}</h4>
         <h4>Author: {{ response[0]["author"] }}</h4>
-        <h4>Published: {{ response[0]["year"] }}</h4>
-        <h4> Average Ratings: {{ response[1]["average_rating"] }}</h4>
-        <h4> Number of Ratings: {{ response[1]["ratings_count"] }}</h4>
+        <h4>Pages: {{ response[1]["number_of_pages"] }}</h4>
+        <h4>Published: {{ response[0][3] }}</h4>
+        <h4>Publishers: {{ response[1]["publishers"][0] }}</h4>
+        <h4> Average Ratings: {{ response[2][0]["ratings_average"] }}</h4>
+        <h4> Number of Ratings: {{ response[2][0]["ratings_count"] }}</h4>
         <br>
         </div>
         {% if review %}
