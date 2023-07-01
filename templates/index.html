@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block hero %}
-<div class="hero-image">
+<div class="index-page">
         <div class="hero-text">
                 {% with messages = get_flashed_messages() %}
                         {% if messages %}
@@ -28,7 +28,7 @@
                         <li>Share your thoughts and let your voice be heard! </li>
                  <br>
                  <h6> navigate to /books/isbn where isbn is the isbn number of a book for a JSON of book information </h6>
-                <a href="search" class="btn btn-light" role="button"> Get Started! </a>
+                <a href="search" class="btn btn-light" style="color:royalblue" role="button"> Get Started! </a>
                 {% else %}
                 <h1> GoodReads Book Reviews </h1>
                 <h2> Have your voice heard. </h2>

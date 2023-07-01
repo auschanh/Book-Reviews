@@ -23,6 +23,15 @@ padding: 6px 0;
   margin-left: 0px;
 }
 
+.index-page {
+  margin-top: 50px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: black; 
+}
+
 /* LANDING PAGE */
 .hero-image {
   background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/static/coffeebook.jpeg");
@@ -116,7 +125,7 @@ hr {
 }
 
 .index_review {
-  color: #202020;
+  color: royalblue;
   text-align: left;
 }
 
