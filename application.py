@@ -27,7 +27,12 @@ db = scoped_session(sessionmaker(bind=engine))
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    user = session["username"]
+    own_review = db.execute("SELECT title, review, rating, isbn FROM reviews WHERE username=:username", {"username": user})
+    own_review = own_review.fetchall()
+    review = own_review
+    print(review)
+    return render_template("index.html", review=review)
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -203,7 +208,17 @@ def books(isbn):
         review = own_review
 
         return render_template("books.html", response=books_list, review=review)
-        
+
+# @app.route("/index")
+# @authorize
+# def home():
+#     user = session["username"]
+#     own_review = db.execute("SELECT title, review, rating isbn FROM reviews WHERE username=:user", {"username": user})
+#     own_review = own_review.fetchall()
+#     review = own_review
+#     print(review)
+
+#     return render_template("index.html", review=review)
 
 @app.route("/api/<isbn>")
 @authorize

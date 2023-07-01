@@ -115,6 +115,11 @@ hr {
   margin-bottom: 25px;
 }
 
+.index_review {
+  color: #202020;
+  text-align: left;
+}
+
 .username{
   color: royalblue;
   text-align: left;

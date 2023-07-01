@@ -12,6 +12,14 @@
                 {% if session.username %}
                 <div class ="welcome">
                         <h1> Welcome {{ session.username.title() }} </h1>
+                        <h3>MY REVIEWS</h3>
+                        {% if review %}
+                                {% for reviews in review %}
+                                <hr>
+                                <h4><a href="books/{{ reviews['isbn']}}"><span class="index_review">{{ reviews["title"] }}</span></a>  {{ reviews["rating"] }}/5 </h4>
+                                <h5 class="comment"> {{ reviews["review"] }}</h5>
+                                {% endfor %}
+                        {% endif %}
                 </div>
                 <h2> Get Started with GoodReads Book Reviews: </h2>
                         <ol class="logged-list">
