@@ -8,15 +8,11 @@ https://auschanh-goodreads.herokuapp.com/
 
 # Book Reviews Website
 
-Web Programming with Python(Flask) and SQL
-
-This is Project 1 for CS50W.
-
 The purpose of this project is to demonstrate and show my understanding of:
 1) Handling of sessions (login and logout) with flask
-2) Querying for data in a Heroku hosted SQL database
-2) Registration system with data insertion into an SQL database hosted by Heroku
-3) Searching data through API calls to GoodReads Book Reviews
-4) Creating my own API function for user created reviews
+2) Querying for data in a railway hosted postgresSQL database
+2) Registration system with data insertion into a SQL database hosted by railway
+3) Using data through API calls to openlibrary book api
+
 
 
