@@ -44,7 +44,7 @@
         
         <h1 style="margin-top: 50px"> Leave your thoughts! </h1>
         <div class="comment-area">
-        <form method="POST", action="/books/{{ response[1]['isbn'] }}">
+        <form method="POST", action="/books/{{ response[0][0] }}">
         <div class="book-rating">
             <h5 style="display: inline-block;"> Leave a Rating: </h5>
             <input type="radio" id="one" name="rating" value="1">
