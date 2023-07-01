@@ -25,14 +25,25 @@ engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
 
-@app.route("/")
-def index():
+@app.route("/account")
+@authorize
+def account():
     user = session["username"]
     own_review = db.execute("SELECT title, review, rating, isbn FROM reviews WHERE username=:username", {"username": user})
     own_review = own_review.fetchall()
     review = own_review
-    print(review)
     return render_template("index.html", review=review)
+
+@app.route("/")
+def index():
+    if session.get('username'):
+        user = session["username"]
+        own_review = db.execute("SELECT title, review, rating, isbn FROM reviews WHERE username=:username", {"username": user})
+        own_review = own_review.fetchall()
+        review = own_review
+        return render_template("index.html", review=review)
+    else:
+        return render_template("index.html")
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -68,6 +79,8 @@ def register():
         
         db.commit()
         flash("User account created!")
+        session[username] = True
+        session["username"] = username
         return redirect(url_for("index"))
     else:
         return render_template("register.html")

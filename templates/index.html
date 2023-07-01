@@ -19,6 +19,8 @@
                                 <h4><a href="books/{{ reviews['isbn']}}"><span class="index_review">{{ reviews["title"] }}</span></a>  {{ reviews["rating"] }}/5 </h4>
                                 <h5 class="comment"> {{ reviews["review"] }}</h5>
                                 {% endfor %}
+                        {% else %}
+                                <h6>No reviews yet.</h6>
                         {% endif %}
                 </div>
                 <h2> Get Started with GoodReads Book Reviews: </h2>
