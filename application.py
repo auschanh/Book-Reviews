@@ -222,35 +222,36 @@ def books(isbn):
 
         return render_template("books.html", response=books_list, review=review)
 
-@app.route("/api/<isbn>")
-@authorize
-def isbn_api(isbn):
+# removing custom API for now
+# @app.route("/api/<isbn>")
+# @authorize
+# def isbn_api(isbn):
     
-    check = db.execute("SELECT isbn FROM books WHERE isbn= :isbn", {"isbn": isbn})
-    if check.fetchone() == None:
-        return jsonify({"error": "Invalid ISBN"}), 404
+#     check = db.execute("SELECT isbn FROM books WHERE isbn= :isbn", {"isbn": isbn})
+#     if check.fetchone() == None:
+#         return jsonify({"error": "Invalid ISBN"}), 404
     
-    # call goodreads API for review data
-    key = "notactuallymykey"
-    res = requests.get(f"https://www.goodreads.com/book/review_counts.json", params={"key": key, "isbns": isbn})
-    response = res.json()
-    response = response["books"][0]
+#     # call goodreads API for review data
+#     key = "notactuallymykey"
+#     res = requests.get(f"https://www.goodreads.com/book/review_counts.json", params={"key": key, "isbns": isbn})
+#     response = res.json()
+#     response = response["books"][0]
 
-    # fetch review count and average score
-    review_count = response["reviews_count"]
-    average_rating = response["average_rating"]
+#     # fetch review count and average score
+#     review_count = response["reviews_count"]
+#     average_rating = response["average_rating"]
 
-    # fetch title, author, isbn, year from our DB
-    query = db.execute("SELECT * FROM books WHERE isbn=:isbn", {"isbn": isbn})
-    book_info = query.fetchone()
-    return jsonify({
-        "title": book_info["title"],
-        "author": book_info["author"],
-        "year": book_info["year"],
-        "isbn": book_info["isbn"],
-        "review_count": review_count,
-        "average_score": average_rating
-    })
+#     # fetch title, author, isbn, year from our DB
+#     query = db.execute("SELECT * FROM books WHERE isbn=:isbn", {"isbn": isbn})
+#     book_info = query.fetchone()
+#     return jsonify({
+#         "title": book_info["title"],
+#         "author": book_info["author"],
+#         "year": book_info["year"],
+#         "isbn": book_info["isbn"],
+#         "review_count": review_count,
+#         "average_score": average_rating
+#     })
 
 if __name__ ==  "__main__":
     app.run(debug=True, port=5000)

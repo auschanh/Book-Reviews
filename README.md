@@ -1,5 +1,5 @@
 # Checkout the Website
-https://auschanh-goodreads.herokuapp.com/
+https://auschanh-bookreviews.up.railway.app/
 
 1) Sign up
 2) Search for books (hint: search for "the thief" for most reviews on a book)
