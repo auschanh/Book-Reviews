@@ -222,17 +222,6 @@ def books(isbn):
 
         return render_template("books.html", response=books_list, review=review)
 
-# @app.route("/index")
-# @authorize
-# def home():
-#     user = session["username"]
-#     own_review = db.execute("SELECT title, review, rating isbn FROM reviews WHERE username=:user", {"username": user})
-#     own_review = own_review.fetchall()
-#     review = own_review
-#     print(review)
-
-#     return render_template("index.html", review=review)
-
 @app.route("/api/<isbn>")
 @authorize
 def isbn_api(isbn):
@@ -242,7 +231,7 @@ def isbn_api(isbn):
         return jsonify({"error": "Invalid ISBN"}), 404
     
     # call goodreads API for review data
-    key = "XeAVJlPSlL5liDg1ndgw"
+    key = "notactuallymykey"
     res = requests.get(f"https://www.goodreads.com/book/review_counts.json", params={"key": key, "isbns": isbn})
     response = res.json()
     response = response["books"][0]
