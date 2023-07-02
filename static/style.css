@@ -174,9 +174,9 @@ input[name=message]{
 
 .btn-light{
   color: white;
+  background-color: royalblue;
   margin-top: 10px;
   border: 0;
-  background: transparent;
   padding: 0 2em;
   font-size: 2em;
   border-radius: 20px;
@@ -265,9 +265,8 @@ button:hover {
 .social-contact{
   text-align: center;
   background-color: rgb(159, 186, 238);
+  margin: auto;
   margin-top: 50px;
-  margin-left: 500px;
-  margin-right: 500px;
   border-radius: 20px;
   padding: 30px;
   font-family: "acumin-pro";
