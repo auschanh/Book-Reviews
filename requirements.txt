@@ -7,3 +7,4 @@ Werkzeug==2.0.3
 sqlalchemy==1.2.0
 requests
 gunicorn==20.0.4
+python-dotenv==1.0.0
