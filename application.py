@@ -9,10 +9,15 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from werkzeug.security import generate_password_hash, check_password_hash
 from titlecase import titlecase
 
+from dotenv import load_dotenv
+
+load_dotenv()
+DATABASE_URL = os.getenv('DATABASE_URL')
+
 app = Flask(__name__)
 
 # Check for environment variable
-if not os.getenv("DATABASE_URL"):
+if not DATABASE_URL:
     raise RuntimeError("DATABASE_URL is not set")
 
 # Configure session to use filesystem
@@ -21,7 +26,7 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Set up database
-engine = create_engine(os.getenv("DATABASE_URL"))
+engine = create_engine(DATABASE_URL)
 db = scoped_session(sessionmaker(bind=engine))
 
 
