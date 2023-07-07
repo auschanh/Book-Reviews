@@ -4,7 +4,7 @@ import requests
 from logged import authorize
 from flask import Flask, session, request, render_template, url_for, redirect, flash, session, abort, jsonify
 from flask_session import Session
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, exc
 from sqlalchemy.orm import scoped_session, sessionmaker
 from werkzeug.security import generate_password_hash, check_password_hash
 from titlecase import titlecase
@@ -63,32 +63,36 @@ def register():
             password = password.strip()
         
         hashed_pass = generate_password_hash(password, 'sha256')
+        try:
+            rows = db.execute("SELECT * FROM users WHERE username= :username", {"username": username.lower()})
+            row = rows.fetchone()
 
-        rows = db.execute("SELECT * FROM users WHERE username= :username", {"username": username.lower()})
-        row = rows.fetchone()
-
-        if row:
-            return render_template("error.html", msg="that username already exists")
-       
-        if not request.form["password"] == request.form["confirm_password"]:
-            return render_template("error.html", msg="passwords didn't match")
-
-         # SQL command, INSERT user data from register.html
-        username = username.lower()   
-        db.execute("INSERT INTO users(username, hash_pass, fname, lname) VALUES (:username, :hash_pass, :fname, :lname)",
-        {"username": username,
-        "hash_pass": hashed_pass,
-        "fname": request.form["fname"],
-        "lname": request.form["lname"]
-        })
+            if row:
+                return render_template("error.html", msg="that username already exists")
         
-        db.commit()
+            if not request.form["password"] == request.form["confirm_password"]:
+                return render_template("error.html", msg="passwords didn't match")
+
+            # SQL command, INSERT user data from register.html
+            username = username.lower()   
+            db.execute("INSERT INTO users(username, hash_pass, fname, lname) VALUES (:username, :hash_pass, :fname, :lname)",
+            {"username": username,
+            "hash_pass": hashed_pass,
+            "fname": request.form["fname"],
+            "lname": request.form["lname"]
+            })
+            db.commit()
+        except exc.SQLAlchemyError:
+            db.rollback()
+        finally:
+            db.close()
         flash("User account created!")
         session[username] = True
         session["username"] = username
         return redirect(url_for("index"))
     else:
         return render_template("register.html")
+        
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -108,7 +112,12 @@ def login():
       
       if user_row == None or not check_password_hash(user_row[1], request.form["password"]):
           return render_template("error.html", msg="Invalid username or password")
-        
+      try:
+          db.commit()
+      except exc.SQLAlchemyError:
+          db.rollback()
+      finally:
+          db.close()  
       session[username] = True
       session["username"] = user_row[0] # set session username to username from query
       return redirect(url_for("index"))
@@ -167,11 +176,16 @@ def books(isbn):
         if not message:
             flash("Please write a review!")
             return redirect(request.url)
-
-        check = db.execute("SELECT username, isbn FROM reviews \
-            WHERE username=:username\
-            AND isbn=:isbn",
-            {"username": user, "isbn": isbn})
+        try:
+            check = db.execute("SELECT username, isbn FROM reviews \
+                WHERE username=:username\
+                AND isbn=:isbn",
+                {"username": user, "isbn": isbn})
+            db.commit()
+        except exc.SQLAlchemyError:
+            db.rollback()
+        finally:
+            db.close()
         check = check.fetchone()
         # prevent a user from submitting a review for something they already reviewed
         if check is not None:
@@ -179,25 +193,31 @@ def books(isbn):
             return redirect(request.url) # returns to same page
         
         # grab title 
-
-        get_title = db.execute("SELECT title FROM books WHERE isbn=:isbn", {"isbn": isbn})
-        get_title = get_title.fetchone()
-       
-        title = get_title["title"]
-        query = db.execute("INSERT INTO reviews(username, title, review, rating, isbn) VALUES\
-            (:username, :title, :review, :rating, :isbn)",
-            {"username": user, "title": title, "review": message, "rating": rating, "isbn": isbn})
+        try:
+            get_title = db.execute("SELECT title FROM books WHERE isbn=:isbn", {"isbn": isbn})
+            get_title = get_title.fetchone()
         
-        db.commit()
+            title = get_title["title"]
+            query = db.execute("INSERT INTO reviews(username, title, review, rating, isbn) VALUES\
+                (:username, :title, :review, :rating, :isbn)",
+                {"username": user, "title": title, "review": message, "rating": rating, "isbn": isbn})
+            db.commit()
+        except exc.SQLAlchemyError:
+            db.rollback()
+        finally:    
+            db.close()
         flash(f"Review submitted for {title}")
         return redirect(request.url)
         
     else: 
         # user clicked on book from results page GET
-        check = db.execute("SELECT isbn, title, author, year FROM books WHERE isbn=:isbn", {"isbn": isbn})
-        check = check.fetchall()
-        print(check)
-       
+        try:
+            check = db.execute("SELECT isbn, title, author, year FROM books WHERE isbn=:isbn", {"isbn": isbn})
+            check = check.fetchall()
+        except exc.SQLAlchemyError:
+            db.rollback()
+        finally: 
+            db.close()
         if check is None:
             return render_template("error.html", msg=f"there is no book with ISBN {isbn}")
 
@@ -220,10 +240,16 @@ def books(isbn):
         books_list = check
 
         # fetch our own reviews (submitted on my website, on my database), query with SQLalchemy
-        own_review = db.execute("SELECT books.isbn, review, rating, username FROM books JOIN reviews\
-            ON books.isbn = reviews.isbn WHERE books.isbn=:isbn", {"isbn":isbn})
-        own_review = own_review.fetchall()
-        review = own_review
+        try:
+            own_review = db.execute("SELECT books.isbn, review, rating, username FROM books JOIN reviews\
+                ON books.isbn = reviews.isbn WHERE books.isbn=:isbn", {"isbn":isbn})
+            own_review = own_review.fetchall()
+            review = own_review
+            db.commit()
+        except exc.SQLAlchemyError:
+            db.rollback()
+        finally:
+            db.close()
 
         return render_template("books.html", response=books_list, review=review)
 
