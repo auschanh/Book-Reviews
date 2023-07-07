@@ -26,7 +26,7 @@ The purpose of this project was to learn and understand:
 ### Searching for a Book
 ![Searching for a book](https://imgur.com/rQjfVIw.gif "searching functionality") <br>
 ### Leaving a Review and Rating
-![Leaving a Review and Rating](https://imgur.com/d6cnV6M.gif "reviewing and rating a book") <br>
+![Leaving a Review and Rating](https://imgur.com/4x2GmAA.gif "reviewing and rating a book") <br>
 ### Sorting Results Table
 ![Sorting the Results Table](https://imgur.com/IFbeeZc.gif "sorting functionality after book search") <br>
 ### Account Page
