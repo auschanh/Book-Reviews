@@ -123,14 +123,13 @@ def login():
       else:
           username = username.strip().lower()
           password = password.strip()
-      
-      rows = db.execute("SELECT * FROM users WHERE username= :username", {"username": username})
-      user_row = rows.fetchone()
-      
-      if user_row == None or not check_password_hash(user_row[1], request.form["password"]):
-          return render_template("error.html", msg="Invalid username or password")
       try:
-          db.commit()
+        rows = db.execute("SELECT * FROM users WHERE username= :username", {"username": username})
+        user_row = rows.fetchone()
+        
+        if user_row == None or not check_password_hash(user_row[1], request.form["password"]):
+            return render_template("error.html", msg="Invalid username or password")
+        db.commit()
       except exc.SQLAlchemyError:
           db.rollback()
       finally:
@@ -168,15 +167,21 @@ def search():
         book = "%" + query_replaced + "%"
         if not book:
             return render_template("error.html", msg="Please type a book title, ISBN, or author")
-        rows = db.execute("SELECT * FROM books WHERE isbn LIKE :book OR\
-            title LIKE :book OR \
-            author LIKE :book ",
-            {"book": book})
-        if rows.rowcount == 0:
-            flash(f"No results found for {query}")
-            return redirect(url_for("search"))
-        results = rows.fetchall() # fetch all results instead of fetchone as used in login route
-        return render_template("results.html", books=results, query=search_result)
+        try:
+            rows = db.execute("SELECT * FROM books WHERE isbn LIKE :book OR\
+                title LIKE :book OR \
+                author LIKE :book ",
+                {"book": book})
+            if rows.rowcount == 0:
+                flash(f"No results found for {query}")
+                return redirect(url_for("search"))
+            results = rows.fetchall() # fetch all results instead of fetchone as used in login route
+            db.commit()
+            return render_template("results.html", books=results, query=search_result)
+        except exc.SQLAlchemyError:
+            db.rollback()
+        finally:
+            db.close()
     else:
         return render_template("search.html")
 
