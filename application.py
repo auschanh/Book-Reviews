@@ -17,7 +17,7 @@ app = Flask(__name__)
 
 if not os.getenv('DATABASE_URL'):
     load_dotenv()
-    
+
 DATABASE_URL = os.getenv('DATABASE_URL')
 
 # Configure session to use filesystem
@@ -259,4 +259,4 @@ def books(isbn):
 #     })
 
 if __name__ ==  "__main__":
-    app.run(debug=True, port=5000)
+    app.run(debug=False, port=8080)
