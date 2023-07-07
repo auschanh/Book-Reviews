@@ -3,6 +3,10 @@
 # Edit at https://www.gitignore.io/?templates=python
 
 *.pyc
+.toml
+.dockerignore
+.env
+db/password.txt
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
