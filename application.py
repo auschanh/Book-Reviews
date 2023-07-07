@@ -11,14 +11,14 @@ from titlecase import titlecase
 
 from dotenv import load_dotenv
 
-load_dotenv()
-DATABASE_URL = os.getenv('DATABASE_URL')
-
 app = Flask(__name__)
 
 # Check for environment variable
-if not DATABASE_URL:
-    raise RuntimeError("DATABASE_URL is not set")
+
+if not os.getenv('DATABASE_URL'):
+    load_dotenv()
+    
+DATABASE_URL = os.getenv('DATABASE_URL')
 
 # Configure session to use filesystem
 app.config["SESSION_PERMANENT"] = False
