@@ -134,9 +134,15 @@ def login():
           db.rollback()
       finally:
           db.close()  
-      session[username] = True
-      session["username"] = user_row[0] # set session username to username from query
-      return redirect(url_for("index"))
+      try:    
+        session[username] = True
+        session["username"] = user_row[0] # set session username to username from query
+        db.commit()
+        return redirect(url_for("index"))
+      except exc.UnboundLocalError:
+          db.rollback()
+      finally:
+          db.close()
   else:
       return render_template("login.html")
 
