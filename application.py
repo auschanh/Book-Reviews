@@ -33,22 +33,39 @@ db = scoped_session(sessionmaker(bind=engine))
 @app.route("/account")
 @authorize
 def account():
-    user = session["username"]
-    own_review = db.execute("SELECT title, review, rating, isbn FROM reviews WHERE username=:username", {"username": user})
-    own_review = own_review.fetchall()
-    review = own_review
-    return render_template("index.html", review=review)
-
-@app.route("/")
-def index():
-    if session.get('username'):
+    try:
         user = session["username"]
         own_review = db.execute("SELECT title, review, rating, isbn FROM reviews WHERE username=:username", {"username": user})
         own_review = own_review.fetchall()
         review = own_review
+        db.commit()
         return render_template("index.html", review=review)
-    else:
+    except exc.SQLAlchemyError:
+        db.rollback()
         return render_template("index.html")
+    finally:
+        db.close()
+        
+
+@app.route("/")
+def index():
+    try:
+        if session.get('username'):
+            user = session["username"]
+            own_review = db.execute("SELECT title, review, rating, isbn FROM reviews WHERE username=:username", {"username": user})
+            own_review = own_review.fetchall()
+            review = own_review
+            db.commit()
+            return render_template("index.html", review=review)
+        else:
+            db.commit()
+            return render_template("index.html")
+    except exc.SQLAlchemyError:
+        db.rollback()
+        return render_template("index.html")
+    finally:
+        db.close()
+        
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
