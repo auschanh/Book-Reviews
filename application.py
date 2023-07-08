@@ -141,6 +141,8 @@ def login():
         return redirect(url_for("index"))
       except exc.UnboundLocalError:
           db.rollback()
+      except exc.SQLAlchemyError:
+          db.rollback()
       finally:
           db.close()
   else:
