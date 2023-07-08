@@ -11,8 +11,8 @@
                 {% endwith %}
                 {% if session.username %}
                 <div class ="welcome">
-                        <h1> Welcome {{ session.username.title() }} </h1>
-                        <h3>MY REVIEWS</h3>
+                        <h1> Welcome {{ session.username.title() }} </h1><br>
+                        <h3><b>MY REVIEWS</b></h3>
                         {% if review %}
                                 {% for reviews in review %}
                                 <hr>
@@ -23,14 +23,17 @@
                                 <h6>No reviews yet.</h6>
                         {% endif %}
                 </div>
-                <h2> Get Started with your book reviews: </h2>
-                        <ol class="logged-list">
-                        <li> <a href="search">Search</a> for a book you love</li>
-                        <li>Rate and Review your book</li>
-                        <li>Share your thoughts and let your voice be heard! </li>
-                 <br>
-                 <h6> navigate to /books/isbn where isbn is the isbn number of a book for a JSON of book information </h6>
-                <a href="search" class="btn btn-light"  role="button"> Get Started! </a>
+                <div class="getstarted">
+                        <h2 id="getstarted"> Get Started with your book reviews: </h2>
+                                <ol class="logged-list">
+                                <li> <a href="search">Search</a> for a book you love</li>
+                                <li>Rate and Review your book</li>
+                                <li>Share your thoughts and let your voice be heard! </li>
+                                </ol>
+                        <br>
+                        <h6> navigate to /books/isbn where isbn is the isbn number of a book for a JSON of book information </h6>
+                        <a href="search" class="btn btn-light"  role="button"> Get Started! </a><br><br>
+                </div>
                 {% else %}
                 <h1> Enjoy the Book Reviews </h1>
                 <h2> Have your voice heard. </h2>
