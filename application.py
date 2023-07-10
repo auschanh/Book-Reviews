@@ -113,7 +113,7 @@ def register():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-  
+  user_row = None
   if request.method == "POST":
       username = request.form["username"]
       password = request.form["password"]
@@ -139,10 +139,10 @@ def login():
         session["username"] = user_row[0] # set session username to username from query
         db.commit()
         return redirect(url_for("index"))
-      except exc.UnboundLocalError:
+      except exc.UnboundLocalError or exc.SQLAlchemyError:
           db.rollback()
-      except exc.SQLAlchemyError:
-          db.rollback()
+    #   except exc.SQLAlchemyError:
+    #       db.rollback()
       finally:
           db.close()
   else:
