@@ -257,7 +257,7 @@ button:hover {
 
 .social-contact{
   text-align: center;
-  background-color: rgb(159, 186, 238);
+  /* background-color: rgb(159, 186, 238); */
   margin: auto;
   margin-top: 50px;
   border-radius: 20px;
@@ -269,16 +269,13 @@ button:hover {
   list-style: none;
   margin: 10px 30px;
   display: inline-block;
-  font-size: 30px;
+  font-size: 4vw;
   padding: 2px;
   transition: .5s;
 }
 
 .social-icons{
-  border: 1px solid #000000;
   display: inline-flex;
-  border-radius: 5px;
-  font-family: "acumin-pro";
 }
 
 .icon-hamburger {
@@ -292,6 +289,14 @@ button:hover {
   text-align: center; 
   margin-bottom: 10px;
 }
+.social-contact > p {
+  font-family: "acumin-pro";
+  font-size: 30px;
+}
+.book-rating > h5, .books-reviewradio {
+  display: block;
+  text-align: center;
+}
 
 
 /*                  RESPONSIVE CSS 
@@ -304,13 +309,51 @@ button:hover {
     float: none;
   }
 }
-/* when screen is less than 900px wide
-FOR TABLET
+
+/* when screen is less than 1024px wide
+FOR TABLET PORTRAIT
 */
-@media screen and (max-width: 900px){
+@media screen and (max-width: 1024px){
   .signup-form {
     width: 80%;
   }
+  .contact {
+    margin: auto;
+    background-color: initial;
+  }
+  .contact > h4{
+    font-size: 4.5vw;
+  }
+  .social-contact {
+    background-color: inherit;
+    padding: 0 0;
+  }
+  .social-contact > h2, .contact > h2 {
+    font-size: 6vw;
+  }
+  .social-icons {
+    display: contents;
+    border: inherit;
+    /* align-items: center; */
+  }
+  .social-contact > p {
+    font-family: "acumin-pro";
+    font-size: 6vw;
+    /* display: none; */
+  }
+  .icon {
+    margin: auto;
+    padding: 0 15px;
+    font-size: 12vw;
+  }
+  /* book page */
+  .comment-area {
+    margin-right: 10px;
+  }
+  .book-rating {
+
+  }
+
 }
 
 /* when screen is less than 600px wide
@@ -413,28 +456,18 @@ FOR PHONES
     text-align: center;
     margin-bottom: 30px;
   }
-  /* Contact Page */
   .contact {
     margin: auto;
     background-color: initial;
   }
-  .social-contact {
-    background-color: inherit;
-    padding: 0 0;
+  .contact > h4{
+    font-size: 6vw;
   }
-  .social-icons {
-    display: contents;
-    border: inherit;
-    /* align-items: center; */
+  .social-contact > h2, .contact > h2 {
+    font-size: 8vw;
   }
-  .icon > a > i > p {
-    /* font-family: "acumin-pro"; */
-    display: none;
-  }
-  .icon {
-    margin: auto;
-    padding: 0 15px;
-    font-size: 15vw;
+  .social-contact > p {
+    font-size: 8vw;
   }
 }
 
