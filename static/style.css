@@ -395,7 +395,7 @@ FOR TABLET PORTRAIT
 FOR PHONES 
 */
 
-@media screen and (max-width: 800px){
+@media screen and (max-width: 600px){
   /* navbar */
   /* collapse right side of navbar */
   .navbar-nav.ml-auto > .nav-item > a.nav-link{

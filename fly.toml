@@ -15,7 +15,7 @@ primary_region = "yyz"
   PORT = "8080"
 
 [[http_service.checks]]
-  grace_period = "120s"
+  grace_period = "30s"
   interval = "30s"
   method = "GET"
   timeout = "5s"
