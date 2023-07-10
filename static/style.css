@@ -102,49 +102,11 @@ th:hover {
 .results-pg{
   margin-top: 50px;
 }
-/* book page with reviews */
-
-.book-rating label {
-  padding-right: 12px;
-}
-
-.book-info {
-  text-align: center;
-  margin-top: 50px;
-}
-
-.reviews {
-  margin-top: 30px;
-  margin-left: 150px;
-  margin-right: 150px;
-}
-
-hr {
-  border: 1px solid #b9b9b9;
-  margin-bottom: 25px;
-}
 
 .index_review {
   color: royalblue;
   text-align: left;
 }
-
-.username{
-  color: royalblue;
-  text-align: left;
-}
-
-.comment {
-  text-align: center;
-}
-
-.comment-area{
-  background-color: rgb(159, 186, 238);
-  border-radius: 20px;
-  padding: 40px;
-  margin-right: 150px;
-}
-
 /* SEARCH PAGE */
 
 #search-h1 {
@@ -281,10 +243,7 @@ button:hover {
 .icon-hamburger {
   display: none;
 }
-.book-rating > h5 {
-  display: inline-block;
 
-}
 .signup-form > h1 {
   text-align: center; 
   margin-bottom: 10px;
@@ -293,10 +252,60 @@ button:hover {
   font-family: "acumin-pro";
   font-size: 30px;
 }
-.book-rating > h5, .books-reviewradio {
-  display: block;
+
+/* BOOK PAGE */
+.wrapper {
+  display: grid; 
+}
+
+h1.books-keepsearching {
+  margin-top: 50px;
+}
+.book-rating {
+  display: flex;
+}
+.books-reviewradio {
+  margin-left: 10px;
+}
+h1.books-keepsearching, .books-keepsearching > h2, .book-rating > h5, .books-reviewradio  {
   text-align: center;
 }
+h1.books-keepsearching, .books-keepsearching > h2{
+  margin-right: 15vw;
+}
+.book-rating label {
+  padding-right: 12px;
+}
+.comment-area{
+  background-color: rgb(159, 186, 238);
+  border-radius: 20px;
+  padding: 40px;
+  margin-right: 15vw;
+}
+
+.book-info {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.reviews {
+  margin-top: 30px;
+  margin-left: 30vw;
+  margin-right: 30vw;
+  text-align: center;
+}
+.username{
+  color: royalblue;
+  text-align: left;
+}
+.comment {
+  text-align: center;
+}
+hr {
+  border: 1px solid #b9b9b9;
+  margin-bottom: 25px;
+}
+
 
 
 /*                  RESPONSIVE CSS 
@@ -313,7 +322,7 @@ button:hover {
 /* when screen is less than 1024px wide
 FOR TABLET PORTRAIT
 */
-@media screen and (max-width: 1024px){
+@media screen and (max-width: 1300px){
   .signup-form {
     width: 80%;
   }
@@ -348,10 +357,30 @@ FOR TABLET PORTRAIT
   }
   /* book page */
   .comment-area {
-    margin-right: 10px;
+    margin-right: 25px;
   }
   .book-rating {
-
+    display: block;
+  }
+  .book-rating > h5 {
+    padding-top: 0px;
+  }
+  .book-rating > h5, .books-reviewradio {
+    display: block;
+    text-align: center;
+  }
+  .books-keepsearching {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  h1.books-keepsearching, .books-keepsearching > h2{
+    margin-right: 0;
+  }
+  .reviews {
+    margin-top: 30px;
+    margin-left: 15vw;
+    margin-right: 15vw;
+    text-align: center;
   }
 
 }
@@ -360,7 +389,7 @@ FOR TABLET PORTRAIT
 FOR PHONES 
 */
 
-@media screen and (max-width: 600px){
+@media screen and (max-width: 800px){
   /* navbar */
   /* collapse right side of navbar */
   .navbar-nav.ml-auto > .nav-item > a.nav-link{
@@ -437,6 +466,7 @@ FOR PHONES
   }
 
   /* Books Page */
+ 
   .reviews {
     text-align: center;
     margin: 0 10px;
@@ -445,8 +475,11 @@ FOR PHONES
     margin: 0 5px;
     padding: 0 20px;
   }
+  .book-rating {
+    display: block;
+  }
   .book-rating > h5 {
-    padding-top: 20px;
+    padding-top: 0px;
   }
   .book-rating > h5, .books-reviewradio {
     display: block;

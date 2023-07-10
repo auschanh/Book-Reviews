@@ -3,9 +3,9 @@
     books
 {% endblock %}
 {% block content %}
-<div class="row">
-    <div class="col-sm-6">
-        <div class="book-info">
+<div class="wrapper">
+    <div class="row">
+        <div class="col-sm-6 book-info">
    {% if response %}
         <img src="http://covers.openlibrary.org/b/isbn/{{ response[0][0] }}-L.jpg">
         <h2 style="color: royalblue"> {{ response[0]["title"] }}</h2>
@@ -18,22 +18,8 @@
         <h4> Number of Ratings: {{ response[2][0]["ratings_count"] }}</h4>
         <br>
         </div>
-        {% if review %}
-        <h1 style="padding-top: 20px; text-align: center;"> Reviews </h1>
-        <div class="reviews">
-            {% for reviews in review %}
-            <hr>
-            <h4><span class="username">{{ reviews["username"] }}</span> rated it {{ reviews["rating"] }}/5 </h4>
-            <h5 class="comment"> {{ reviews["review"] }}</h5>
-            {% endfor %}
-        </div>
-        {% else %}
-            <p> No reviews yet! Be the first </p>
-        {% endif %}
    {% endif %}
-    </div>
-
-    <div class="col-md-6">
+    <div class="col-sm-6">
         {% with messages = get_flashed_messages() %}
                 {% if messages %}
                         {% for message in messages %}
@@ -42,33 +28,54 @@
                 {% endif %}
         {% endwith %}
         
-        <h1 style="margin-top: 50px"> Leave your thoughts! </h1>
+        <h1 class="books-keepsearching"> Leave your thoughts! </h1>
         <div class="comment-area">
-        <form method="POST", action="/books/{{ response[0][0] }}">
-        <div class="book-rating">
-            <h5> Leave a Rating: </h5>
-            <div class="books-reviewradio">
-                <input type="radio" id="one" name="rating" value="1">
-                <label for="one">1</label>
-                <input type="radio" id="two" name="rating" value="2">
-                <label for="two">2</label>
-                <input type="radio" id="three" name="rating" value="3">
-                <label for="three">3</label>
-                <input type="radio" id="four" name="rating" value="4">
-                <label for="four">4</label>
-                <input type="radio" id="five" name="rating" value="5" checked>
-                <label for="five">5</label>
+            <form method="POST", action="/books/{{ response[0][0] }}">
+            <div class="book-rating">
+                <h5> Leave a Rating: </h5>
+                <div class="books-reviewradio">
+                    <input type="radio" id="one" name="rating" value="1">
+                    <label for="one">1</label>
+                    <input type="radio" id="two" name="rating" value="2">
+                    <label for="two">2</label>
+                    <input type="radio" id="three" name="rating" value="3">
+                    <label for="three">3</label>
+                    <input type="radio" id="four" name="rating" value="4">
+                    <label for="four">4</label>
+                    <input type="radio" id="five" name="rating" value="5" checked>
+                    <label for="five">5</label>
+                </div>
             </div>
-        </div>
             <textarea name="message" style="width:100%; height:100px;" placeholder="Leave a review!"></textarea>
             <br>
             <button type="submit" class="btn btn-warning">Submit</button>
-          </form>          
-</div>
-<br>
-<div class="books-keepsearching">
-    <h2> <a href="../search" style="color: inherit">Keep Searching</a></h2>
-</div>
+            </form>          
+        </div>
+    <br>
+    <div class="books-keepsearching">
+        <a href="../search">
+            <button class="btn btn-light" type="submit">Keep Searching</button>
+        </a>
+    </div>       
+    </div>
 
+    </div>
+    <div class="row">
+        <div class="col">
+        {% if review %}
+        <h1 style="padding-top: 20px; text-align: center;"> Reviews </h1><br>
+        <div class="reviews">
+            {% for reviews in review %}
+            <hr>
+            <h4><span class="username">{{ reviews["username"] }}</span> rated it {{ reviews["rating"] }}/5 </h4>
+            <h5 class="comment"> {{ reviews["review"] }}</h5>
+            {% endfor %}
+        </div>
+        <br><br>
+        {% else %}
+            <p> No reviews yet! Be the first </p>
+        {% endif %} 
+    </div>
+    </div>
 </div>
 {% endblock %}
