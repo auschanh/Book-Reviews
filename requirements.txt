@@ -17,5 +17,5 @@ SQLAlchemy==1.2.0
 titlecase==2.4
 typing_extensions==4.6.3
 urllib3==2.0.3
-Werkzeug==2.0.3
+Werkzeug==2.2.3
 zipp==3.15.0
