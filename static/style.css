@@ -319,13 +319,47 @@ hr {
   }
 }
 
-/* when screen is less than 1024px wide
+/* when screen is less than 1300px wide
 FOR TABLET PORTRAIT
 */
 @media screen and (max-width: 1300px){
   .signup-form {
     width: 80%;
   }
+  /* book page */
+  .comment-area {
+    margin-right: 25px;
+  }
+  .book-rating {
+    display: block;
+  }
+  .book-rating > h5 {
+    padding-top: 0px;
+  }
+  .book-rating > h5, .books-reviewradio {
+    display: block;
+    text-align: center;
+  }
+  .books-keepsearching {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  h1.books-keepsearching, .books-keepsearching > h2{
+    margin-right: 0;
+  }
+  .reviews {
+    margin-top: 30px;
+    margin-left: 15vw;
+    margin-right: 15vw;
+    text-align: center;
+  }
+  .contact {
+    background-color: initial;
+    margin: auto;
+  }
+}
+
+@media screen and (max-width: 1024px){
   .contact {
     margin: auto;
     background-color: initial;
@@ -355,34 +389,6 @@ FOR TABLET PORTRAIT
     padding: 0 15px;
     font-size: 12vw;
   }
-  /* book page */
-  .comment-area {
-    margin-right: 25px;
-  }
-  .book-rating {
-    display: block;
-  }
-  .book-rating > h5 {
-    padding-top: 0px;
-  }
-  .book-rating > h5, .books-reviewradio {
-    display: block;
-    text-align: center;
-  }
-  .books-keepsearching {
-    text-align: center;
-    margin-bottom: 30px;
-  }
-  h1.books-keepsearching, .books-keepsearching > h2{
-    margin-right: 0;
-  }
-  .reviews {
-    margin-top: 30px;
-    margin-left: 15vw;
-    margin-right: 15vw;
-    text-align: center;
-  }
-
 }
 
 /* when screen is less than 600px wide
