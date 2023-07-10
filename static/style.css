@@ -267,8 +267,11 @@ h1.books-keepsearching {
 .books-reviewradio {
   margin-left: 10px;
 }
-h1.books-keepsearching, .books-keepsearching > h2, .book-rating > h5, .books-reviewradio  {
+h1.books-keepsearching, .book-rating > h5, .books-reviewradio  {
   text-align: center;
+}
+.books-keepsearching > a {
+  margin-left: 10vw;
 }
 h1.books-keepsearching, .books-keepsearching > h2{
   margin-right: 15vw;
