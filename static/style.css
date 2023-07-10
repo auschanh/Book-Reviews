@@ -392,6 +392,27 @@ FOR TABLET PORTRAIT
     padding: 0 15px;
     font-size: 12vw;
   }
+  /* result page */
+  .col-md-6 {
+   max-width: 100%; 
+  }
+  .resultsrow {
+    text-align: center;
+    display: block;
+  }
+  .result-search {
+    margin-top: 50px;
+  }
+  #result-search {
+    width: 100%;
+  }
+  /* book page */
+  .bookrow {
+    display: flex;
+  }
+  .books-keepsearching > a {
+    margin-left: 0;
+  }
 }
 
 /* when screen is less than 600px wide
@@ -460,11 +481,14 @@ FOR PHONES
 
   /* Results Page*/
   #myTable {
-    font-size: 3.5vw;
+    font-size: 3.2vw;
   }
   .result-search{
     text-align: center;
-    margin: 0px 10px;
+    /* margin: 0px 10px; */
+    max-width: 95%;
+    margin-right: 10px;
+    margin-left: 10px;
     padding-top: 20px;
   }
   #result-search{
