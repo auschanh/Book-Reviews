@@ -11,7 +11,7 @@
                 {% endwith %}
                 {% if session.username %}
                 <div class ="welcome">
-                        <h1> Welcome {{ session.username.title() }} </h1><br>
+                        <h1> Welcome {{ session["fname"] }} </h1><br>
                         <h3><b>MY REVIEWS</b></h3>
                         {% if review %}
                                 {% for reviews in review %}

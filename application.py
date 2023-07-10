@@ -137,9 +137,10 @@ def login():
       try:    
         session[username] = True
         session["username"] = user_row[0] # set session username to username from query
+        session["fname"] = user_row[2]
         db.commit()
         return redirect(url_for("index"))
-      except exc.UnboundLocalError or exc.SQLAlchemyError:
+      except (UnboundLocalError, exc.SQLAlchemyError):
           db.rollback()
       finally:
           db.close()
@@ -159,7 +160,6 @@ def contact():
     return render_template("contact.html")
 
 @app.route("/search", methods=["GET", "POST"])
-@authorize
 def search():
     if request.method == "POST":
         query = request.form["bookquery"]
@@ -191,95 +191,96 @@ def search():
     else:
         return render_template("search.html")
 
-@app.route("/books/<isbn>", methods=["GET", "POST"])
+@app.route("/books/<isbn>", methods=["GET"])
+def get_books(isbn):
+    # user clicked on book from results page GET
+    try:
+        check = db.execute("SELECT isbn, title, author, year FROM books WHERE isbn=:isbn", {"isbn": isbn})
+        check = check.fetchall()
+    except exc.SQLAlchemyError:
+        db.rollback()
+    finally: 
+        db.close()
+    if check is None:
+        return render_template("error.html", msg=f"there is no book with ISBN {isbn}")
+
+    url = f"https://openlibrary.org/api/books?bibkeys=ISBN:{isbn}&jscmd=details&format=json"
+
+    payload={}
+    headers = {}
+
+    res = requests.request("GET", url, headers=headers, data=payload)
+    response = res.json()
+    response = response[f"ISBN:{isbn}"]["details"]
+    check.append(response)
+
+    url = f"https://openlibrary.org/search.json?isbn={isbn}&fields=rating*"
+    ratings = requests.request("GET", url, headers=headers, data=payload)
+    ratings = ratings.json()
+    ratings = ratings["docs"]
+    check.append(ratings)
+    print(check)
+    books_list = check
+
+    # fetch our own reviews (submitted on my website, on my database), query with SQLalchemy
+    try:
+        own_review = db.execute("SELECT books.isbn, review, rating, username FROM books JOIN reviews\
+            ON books.isbn = reviews.isbn WHERE books.isbn=:isbn", {"isbn":isbn})
+        own_review = own_review.fetchall()
+        review = own_review
+        db.commit()
+    except exc.SQLAlchemyError:
+        db.rollback()
+    finally:
+        db.close()
+
+    return render_template("books.html", response=books_list, review=review)
+    
+@app.route("/books/<isbn>", methods=["POST"])
 @authorize
-def books(isbn):
-    # user submitted a review
-    if request.method == "POST":
-        # grab necessary variables/info
-        user = session["username"]
-        rating = request.form["rating"]
-        message = request.form.get("message", None)
+def post_books(isbn):
+     # user submitted a review
+    # grab necessary variables/info
+    user = session["username"]
+    rating = request.form["rating"]
+    message = request.form.get("message", None)
 
-        if not message:
-            flash("Please write a review!")
-            return redirect(request.url)
-        try:
-            check = db.execute("SELECT username, isbn FROM reviews \
-                WHERE username=:username\
-                AND isbn=:isbn",
-                {"username": user, "isbn": isbn})
-            db.commit()
-        except exc.SQLAlchemyError:
-            db.rollback()
-        finally:
-            db.close()
-        check = check.fetchone()
-        # prevent a user from submitting a review for something they already reviewed
-        if check is not None:
-            flash("You've already reviewed this book!")
-            return redirect(request.url) # returns to same page
-        
-        # grab title 
-        try:
-            get_title = db.execute("SELECT title FROM books WHERE isbn=:isbn", {"isbn": isbn})
-            get_title = get_title.fetchone()
-        
-            title = get_title["title"]
-            query = db.execute("INSERT INTO reviews(username, title, review, rating, isbn) VALUES\
-                (:username, :title, :review, :rating, :isbn)",
-                {"username": user, "title": title, "review": message, "rating": rating, "isbn": isbn})
-            db.commit()
-        except exc.SQLAlchemyError:
-            db.rollback()
-        finally:    
-            db.close()
-        flash(f"Review submitted for {title}")
+    if not message:
+        flash("Please write a review!")
         return redirect(request.url)
-        
-    else: 
-        # user clicked on book from results page GET
-        try:
-            check = db.execute("SELECT isbn, title, author, year FROM books WHERE isbn=:isbn", {"isbn": isbn})
-            check = check.fetchall()
-        except exc.SQLAlchemyError:
-            db.rollback()
-        finally: 
-            db.close()
-        if check is None:
-            return render_template("error.html", msg=f"there is no book with ISBN {isbn}")
+    try:
+        check = db.execute("SELECT username, isbn FROM reviews \
+            WHERE username=:username\
+            AND isbn=:isbn",
+            {"username": user, "isbn": isbn})
+        db.commit()
+    except exc.SQLAlchemyError:
+        db.rollback()
+    finally:
+        db.close()
+    check = check.fetchone()
+    # prevent a user from submitting a review for something they already reviewed
+    if check is not None:
+        flash("You've already reviewed this book!")
+        return redirect(request.url) # returns to same page
+    
+    # grab title 
+    try:
+        get_title = db.execute("SELECT title FROM books WHERE isbn=:isbn", {"isbn": isbn})
+        get_title = get_title.fetchone()
+    
+        title = get_title["title"]
+        query = db.execute("INSERT INTO reviews(username, title, review, rating, isbn) VALUES\
+            (:username, :title, :review, :rating, :isbn)",
+            {"username": user, "title": title, "review": message, "rating": rating, "isbn": isbn})
+        db.commit()
+    except exc.SQLAlchemyError:
+        db.rollback()
+    finally:    
+        db.close()
+    flash(f"Review submitted for {title}")
+    return redirect(request.url)    
 
-        url = f"https://openlibrary.org/api/books?bibkeys=ISBN:{isbn}&jscmd=details&format=json"
-
-        payload={}
-        headers = {}
-
-        res = requests.request("GET", url, headers=headers, data=payload)
-        response = res.json()
-        response = response[f"ISBN:{isbn}"]["details"]
-        check.append(response)
-
-        url = f"https://openlibrary.org/search.json?isbn={isbn}&fields=rating*"
-        ratings = requests.request("GET", url, headers=headers, data=payload)
-        ratings = ratings.json()
-        ratings = ratings["docs"]
-        check.append(ratings)
-        print(check)
-        books_list = check
-
-        # fetch our own reviews (submitted on my website, on my database), query with SQLalchemy
-        try:
-            own_review = db.execute("SELECT books.isbn, review, rating, username FROM books JOIN reviews\
-                ON books.isbn = reviews.isbn WHERE books.isbn=:isbn", {"isbn":isbn})
-            own_review = own_review.fetchall()
-            review = own_review
-            db.commit()
-        except exc.SQLAlchemyError:
-            db.rollback()
-        finally:
-            db.close()
-
-        return render_template("books.html", response=books_list, review=review)
 
 # removing custom API for now
 # @app.route("/api/<isbn>")
